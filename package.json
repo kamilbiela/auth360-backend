@@ -6,7 +6,7 @@
   "author": "",
   "scripts": {
     "start": "node index.js",
-    "test": "./node_modules/.bin/mocha --require ts-node/register \"./src/**/*spec.ts\""
+    "test": "./node_modules/.bin/mocha --require ts-node/register \"./test/**/*spec.ts\""
   },
   "license": "ISC",
   "dependencies": {
