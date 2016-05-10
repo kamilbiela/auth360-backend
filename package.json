@@ -8,10 +8,11 @@
     "start": "node index.js",
     "test": "./node_modules/.bin/mocha --require ts-node/register \"./test/**/*spec.ts\""
   },
-  "license": "ISC",
+  "license": "mit",
   "dependencies": {
     "hapi": "^13.3.0",
     "hapi-router": "^3.5.0",
+    "ioredis": "^2.0.0-rc4",
     "lodash": "^4.11.2",
     "node-uuid": "^1.4.7",
     "promise": "^7.1.1",

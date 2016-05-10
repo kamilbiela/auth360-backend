@@ -1,10 +1,11 @@
 import * as Hapi from "hapi";
 import * as Promise from "promise";
 
-import {IServiceContainer} from "./IServiceContainer";
+import {Config} from "./model/config";
 
-let startServer = (serviceContainer: IServiceContainer): Promise.IThenable<boolean> => {
+function startServer(config: Config): Promise.IThenable<boolean> {
     return new Promise((resolve, reject) => {
+        config;
         const server = new Hapi.Server();
 
         server.start((err) => {
@@ -12,8 +13,6 @@ let startServer = (serviceContainer: IServiceContainer): Promise.IThenable<boole
                 return reject(err);
             }
 
-            serviceContainer;
-            
             return resolve(true);
         })
     });
