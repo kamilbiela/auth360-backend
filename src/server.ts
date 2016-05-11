@@ -1,18 +1,20 @@
 import * as Hapi from "hapi";
 import * as Promise from "promise";
-import {Config} from "./model/config";
-
-
-function startServer(config: Config): Promise.IThenable<boolean> {
-    return Promise((resolve, reject) => {
-        config;
+import {ServiceContainer} from "./model/ServiceContainer";
+    
+function startServer(container: ServiceContainer): Promise.IThenable<boolean> {
+    return new Promise((resolve, reject) => {
+        let config = container.getConfig();
+        
         const server = new Hapi.Server();
+        server.connection({port: config.http.port});
 
         server.start((err) => {
             if (err) {
                 return reject(err);
             }
-
+            
+            console.log(`Started server on port ${config.http.port}` );
             return resolve(true);
         })
     });

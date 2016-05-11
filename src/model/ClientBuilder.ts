@@ -1,4 +1,4 @@
-import {Client} from "../model/client";
+import {Client} from "./Client";
 
 export class ClientBuilder {
     name: string;

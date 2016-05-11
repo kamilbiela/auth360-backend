@@ -1,9 +1,12 @@
 import * as redis from "redis";
-import {ClientBuilder} from "./clientBuilder.ts";
+import {ClientBuilder} from "./ClientBuilder.ts";
+import {Config} from "./Config";
+import {IRedisClient} from "../service/IRedisClient";
 
 export class ServiceContainer {
     constructor(
-        protected redisClient: redis.RedisClient
+        private config: Config,
+        private redisClient: IRedisClient
     ) {
     }
     
@@ -11,11 +14,15 @@ export class ServiceContainer {
         return new ClientBuilder();
     }
     
-    getRedisClient(): redis.RedisClient {
+    getRedisClient(): IRedisClient {
         if (this.redisClient === null) {
             this.redisClient = redis.createClient();
         }
         
         return this.redisClient;
+    }
+    
+    getConfig(): Config {
+        return this.config;
     }
 }

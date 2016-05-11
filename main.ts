@@ -1,7 +1,7 @@
 import startServer from "./src/server";
-import {Config} from "./src/model/config";
+import {serviceContainer} from "./src/service/serviceContainer";
 
-startServer(new Config()).then(() => {
+startServer(serviceContainer).then(() => {
     console.log("server running");
 }).catch((err) => {
     console.error("Server error: ");
