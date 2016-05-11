@@ -1,10 +1,10 @@
 import * as Hapi from "hapi";
 import * as Promise from "promise";
-
 import {Config} from "./model/config";
 
+
 function startServer(config: Config): Promise.IThenable<boolean> {
-    return new Promise((resolve, reject) => {
+    return Promise((resolve, reject) => {
         config;
         const server = new Hapi.Server();
 
