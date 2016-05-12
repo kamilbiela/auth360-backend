@@ -29,6 +29,6 @@ export class ServiceContainer {
     }
     
     getLogger(): ILogger {
-        
+        return this.logger;
     }
 }
