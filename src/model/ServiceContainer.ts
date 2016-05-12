@@ -2,11 +2,13 @@ import * as redis from "redis";
 import {ClientBuilder} from "./ClientBuilder.ts";
 import {Config} from "./Config";
 import {IRedisClient} from "../service/IRedisClient";
+import {ILogger} from "../service/ILogger";
 
 export class ServiceContainer {
     constructor(
         private config: Config,
-        private redisClient: IRedisClient
+        private redisClient: IRedisClient,
+        private logger:  ILogger
     ) {
     }
     
@@ -24,5 +26,9 @@ export class ServiceContainer {
     
     getConfig(): Config {
         return this.config;
+    }
+    
+    getLogger(): ILogger {
+        
     }
 }

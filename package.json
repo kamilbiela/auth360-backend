@@ -6,7 +6,7 @@
   "author": "",
   "scripts": {
     "start": "node index.js",
-    "test": "./node_modules/.bin/mocha --require ts-node/register \"./test/**/*spec.ts\""
+    "test": "./node_modules/.bin/mocha --require ts-node/register \"./test/**/*spec.ts\" \"./src/**/*spec.ts\""
   },
   "license": "mit",
   "dependencies": {
@@ -18,7 +18,8 @@
     "promise": "^7.1.1",
     "redis": "^2.6.0-2",
     "ts-node": "^0.7.2",
-    "typescript": "^1.8.10"
+    "typescript": "^1.8.10",
+    "winston": "^2.2.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",

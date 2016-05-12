@@ -6,5 +6,5 @@ export let loadConfig = (): Config => {
     let configStr = fs.readFileSync("config.ini").toString();
     let config = ini.decode(configStr);
     return <Config>config;
-}
+};
 

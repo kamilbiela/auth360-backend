@@ -8,6 +8,7 @@
     "node": "registry:dt/node#4.0.0+20160412142033",
     "node-uuid": "registry:dt/node-uuid#0.0.0+20160316155526",
     "promise": "registry:dt/promise#7.1.1+20160316171810",
-    "redis": "registry:dt/redis#0.12.1+20160316155526"
+    "redis": "registry:dt/redis#0.12.1+20160316155526",
+    "winston": "registry:dt/winston#0.0.0+20160417152829"
   }
 }
