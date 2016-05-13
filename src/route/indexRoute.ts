@@ -1,11 +1,13 @@
 import * as Hapi from "hapi";
 import {serviceContainer} from "../service/serviceContainer";
 
+let logger = serviceContainer.getLogger();
+
 let route:Hapi.IRouteConfiguration = {
     method: "GET",
     path: "/",
     handler: (request, reply) => {
-        serviceContainer.getLogger().log("debug", "Hello from index");
+        logger.log("debug", "Hello from index");
         reply('hello');
     }
 };
