@@ -1,13 +1,4 @@
-/**
- * interface used for creating object update in rest api
- */
-export interface ClientUpdate {
-    name: string;
-    websiteURL: string;
-    redirectUri: string;
-}
-
-export class Client implements ClientUpdate {
+export class Client {
     constructor(
         public name: string,
         public websiteURL: string,

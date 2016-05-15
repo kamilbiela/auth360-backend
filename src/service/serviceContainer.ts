@@ -3,23 +3,31 @@ import {ServiceContainer} from "../model/ServiceContainer";
 import {loadConfig} from "./configLoader";
 import * as winston from "winston";
 import {ClientDataMapperRedis} from "../dataMapper/redis/ClientDataMapper";
+import {Config} from "../model/Config";
 
-let config = loadConfig();
-let redisClient = redis.createClient();
+let serviceContainer: ServiceContainer = null;
 
-let logger = new (winston.Logger)({
-    level: config.debug.level,
-    transports: [
-        new (winston.transports.Console)()
-    ]
-});
+export function getServiceContainer(config: Config = null, forceNewInstance: boolean = false): ServiceContainer {
+    if (config === null) {
+        config = loadConfig();
+    }
+    
+    let redisClient = redis.createClient();
 
-let clientDataMapper = new ClientDataMapperRedis(redisClient);
+    let logger = new (winston.Logger)({
+        level: config.debug.level,
+        transports: [
+            new (winston.transports.Console)()
+        ]
+    });
 
-export let serviceContainer = new ServiceContainer(
-    config,
-    redisClient,
-    logger,
-    clientDataMapper
-);
+    let clientDataMapper = new ClientDataMapperRedis(redisClient);
 
+    export let serviceContainer = new ServiceContainer(
+        config,
+        redisClient,
+        logger,
+        clientDataMapper
+    );
+
+}
