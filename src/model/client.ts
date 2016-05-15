@@ -1,10 +1,19 @@
-export class Client {
+/**
+ * interface used for creating object update in rest api
+ */
+export interface ClientUpdate {
+    name: string;
+    websiteURL: string;
+    redirectUri: string;
+}
+
+export class Client implements ClientUpdate {
     constructor(
-        private name: string,
-        private websiteURL: string,
-        private redirectUri: string,
-        private clientID: string,
-        private clientSecret: string
+        public name: string,
+        public websiteURL: string,
+        public redirectUri: string,
+        public id: string,
+        public secret: string
     ) {
     }
 }
