@@ -1,15 +1,13 @@
 import * as Hapi from "hapi";
-import {serviceContainer} from "../service/serviceContainer";
+import {ILogger} from "../service/ILogger";
 
-let logger = serviceContainer.getLogger();
-
-let route:Hapi.IRouteConfiguration = {
-    method: "GET",
-    path: "/",
-    handler: (request, reply) => {
-        logger.log("debug", "Hello from index");
-        reply('hello');
-    }
+export let route = (logger: ILogger) => {
+    return {
+        method: "GET",
+        path: "/",
+        handler: (request, reply) => {
+            logger.log("debug", "Hello from index");
+            reply('hello');
+        }
+    };
 };
-
-export default route;

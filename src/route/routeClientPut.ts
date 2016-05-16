@@ -1,13 +1,12 @@
-import {IRoute} from "./IRoute";
 import {ClientBuilder} from "../model/ClientBuilder";
 import {IClientDataMapper} from "../dataMapper/IClientDataMapper";
 
-export let route: IRoute = (
+export let route = (
     clientBuilder: ClientBuilder,
     clientDataMapper: IClientDataMapper
 ) => {
     return {
-        method: "POST",
+        method: "PUT",
         path: `/api/client/{id}`,
         handler: (request, reply) => {
             clientBuilder.setName(request.payload["name"]);
@@ -15,7 +14,7 @@ export let route: IRoute = (
             clientBuilder.setWebsiteURL(request.payload["websiteURL"]);
             let client = clientBuilder.getResult();
 
-            clientDataMapper.insertOrUpdateClient(client).then(() => {
+            clientDataMapper.update(request.params["id"], client).then(() => {
                 return reply(client);
             }).catch((err) => {
                 return reply(err);

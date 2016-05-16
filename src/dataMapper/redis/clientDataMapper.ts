@@ -8,8 +8,12 @@ export class ClientDataMapperRedis {
         private redisClient: IRedisClient
     ) {
     }
+
+    insert(client: Client): Promise<string> {
+        
+    }
     
-    insertOrUpdateClient(client: Client): Promise<void> {
+    update(clientFieldsToUpdate: Client): Promise<void> {
         return new Promise<void>((resolve, reject) => {
             this.redisClient.set(client.id, JSON.stringify(client), (err) => {
                 if (err) {

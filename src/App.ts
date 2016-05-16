@@ -14,6 +14,10 @@ export class App {
     constructor(
         private config: Config
     ) {
+        this.initContainer(config);
+    }
+    
+    private initContainer(config: Config) {
         let redisClient = redis.createClient();
 
         let logger = new (winston.Logger)({
@@ -34,26 +38,31 @@ export class App {
     }
     
     private getConfiguredRoutes(): Hapi.IRouteConfiguration[] {
+        let c = this.container;
         return [
-			routes.clientGET(this.container.getClientDataMapper()),
+            routes.indexGET(c.getLogger()),
+            routes.clientGET(c.getClientDataMapper()),
+            routes.clientPOST(c.getClientBuilderInstance(), this.container.getClientDataMapper())
         ];
     }
 
     startHttpServer(): Promise<boolean> {
         this.getConfiguredRoutes();
         const server = new Hapi.Server();
-	
-		return new Promise<any>((resolve, reject) => {
-			server.connection({port: this.config.http.port});
-			
-			server.start((err) => {
-				if (err) {
-					return reject(err);
-				}
+    
+        return new Promise<any>((resolve, reject) => {
+            server.connection({port: this.config.http.port});
+            
+            server.route(this.getConfiguredRoutes());
+            
+            server.start((err) => {
+                if (err) {
+                    return reject(err);
+                }
 
-				console.log(`Started server on port ${this.config.http.port}` );
-				return resolve();
-			})
-		})
+                console.log(`Started server on port ${this.config.http.port}` );
+                return resolve();
+            })
+        })
     };
 }

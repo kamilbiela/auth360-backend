@@ -5,5 +5,5 @@ let config = configLoader();
 let app = new App(config);
 
 app.startHttpServer().then(() => {
-	console.log("running");
+    console.log("running");
 });
