@@ -5,12 +5,12 @@ export enum ClientTypeEnum {
 
 export class Client {
     constructor(
-        private name: string,
-        private websiteURL: string,
-        private redirectUri: string,
-        private id: string,
-        private secret: string,
-        private type: ClientTypeEnum = ClientTypeEnum.PUBLIC
+        public name: string,
+        public websiteURL: string,
+        public redirectUri: string,
+        public id: string,
+        public secret: string,
+        public type: ClientTypeEnum = ClientTypeEnum.PUBLIC
     ) {
     }
 }

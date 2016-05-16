@@ -1,9 +1,9 @@
-import startServer from "./src/server";
-import {serviceContainer} from "./src/service/serviceContainer";
+import {App} from "./src/App";
+import {configLoader} from "./src/configLoader";
 
-startServer(serviceContainer).then(() => {
-    console.log("server running");
-}).catch((err) => {
-    console.error("Server error: ");
-    console.error(err); 
+let config = configLoader();
+let app = new App(config);
+
+app.startHttpServer().then(() => {
+	console.log("running");
 });
