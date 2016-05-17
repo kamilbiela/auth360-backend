@@ -3,26 +3,42 @@ import {Client} from "../../model/Client";
 import {IRedisClient} from "../../service/IRedisClient";
 import {IClientDataMapper} from "../IClientDataMapper";
 
-export class ClientDataMapperRedis {
+export class ClientDataMapperRedis implements IClientDataMapper {
     constructor(
         private redisClient: IRedisClient
     ) {
     }
+    
+    private getKeyForId(id: string): string {
+        return `client:${id}`;
+    }
 
     insert(client: Client): Promise<string> {
-        
-    }
-    
-    update(clientFieldsToUpdate: Client): Promise<void> {
-        return new Promise<void>((resolve, reject) => {
-            this.redisClient.set(client.id, JSON.stringify(client), (err) => {
+        return new Promise<string>((resolve, reject) => {
+            this.redisClient.setnx(this.getKeyForId(client.id), JSON.stringify(client), (err) => {
+                console.log("SETNX", err, arguments);
+                
                 if (err) {
                     return reject(err);
                 }
-
-                return;
+                
+                return resolve(client.id);
             });
-        })
+        });
+    }
+    
+    update(id: string, clientFieldsToUpdate: Object): Promise<void> {
+        this.getById(id).then((client) => {
+            return new Promise((resolve, reject) => {
+                this.redisClient.set(this.getKeyForId(client.id), JSON.stringify(client), (err) => {
+                    if (err) {
+                        return reject(err);
+                    }
+
+                    return resolve();
+                });
+            });
+        });
     }
 
     hasId(id: string): Promise<boolean> {
@@ -39,7 +55,7 @@ export class ClientDataMapperRedis {
     
     getById(id: string): Promise<Client> {
         return new Promise<Client>((resolve, reject) => {
-            this.redisClient.get(id, (err, data) => {
+            this.redisClient.get(this.getKeyForId(id), (err, data) => {
                 if (err) {
                     return reject(err);
                 }

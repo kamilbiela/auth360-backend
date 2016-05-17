@@ -1,3 +1,4 @@
+// @todo extract enum to separate file
 export enum ClientTypeEnum {
     CONFIDENTAL = 1,
     PUBLIC
