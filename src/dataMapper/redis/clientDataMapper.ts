@@ -2,6 +2,7 @@ import {Promise} from "es6-promise";
 import {Client} from "../../model/Client";
 import {IRedisClient} from "../../service/IRedisClient";
 import {IClientDataMapper} from "../IClientDataMapper";
+import * as _ from "lodash";
 
 export class ClientDataMapperRedis implements IClientDataMapper {
     constructor(
@@ -28,8 +29,8 @@ export class ClientDataMapperRedis implements IClientDataMapper {
     update(id: string, clientFieldsToUpdate: Object): Promise<void> {
         return this.getById(id).then((client) => {
             return new Promise<void>((resolve, reject) => {
-                this.redisClient.set(this.getKeyForId(client.id), JSON.stringify(client), (err, a, b) => {
-                    console.log("SET", err, a, b);
+                let newClient = _.merge(client, clientFieldsToUpdate);
+                this.redisClient.set(this.getKeyForId(client.id), JSON.stringify(newClient), (err) => {
                     if (err) {
                         return reject(err);
                     }
@@ -42,7 +43,7 @@ export class ClientDataMapperRedis implements IClientDataMapper {
 
     hasId(id: string): Promise<boolean> {
         return new Promise<boolean>((resolve, reject) => {
-            this.redisClient.exists(id, (err, result) => {
+            this.redisClient.exists(this.getKeyForId(id), (err, result) => {
                 if (err) {
                     return reject(err);
                 }

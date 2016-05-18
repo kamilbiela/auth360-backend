@@ -10,7 +10,7 @@ describe("Rest API: client endpoint", () => {
                 scope: "uscope1,uscope2",
                 state: "some-random-state",
                 redirect_uri: "https://redirect.to.localhost"
-            }
+            };
 
             // do the request
 

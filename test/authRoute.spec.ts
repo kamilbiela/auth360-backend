@@ -1,5 +1,5 @@
 var assert = require("chai").assert;
-describe("Authorization code flow (3-legged OAuth)", () => {
+xdescribe("Authorization code flow (3-legged OAuth)", () => {
     describe("First time authorization code flow", () => {
         let code: string = "";
 
