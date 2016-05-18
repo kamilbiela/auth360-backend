@@ -16,8 +16,6 @@ export class ClientDataMapperRedis implements IClientDataMapper {
     insert(client: Client): Promise<string> {
         return new Promise<string>((resolve, reject) => {
             this.redisClient.setnx(this.getKeyForId(client.id), JSON.stringify(client), (err) => {
-                console.log("SETNX", err, arguments);
-                
                 if (err) {
                     return reject(err);
                 }
@@ -28,9 +26,10 @@ export class ClientDataMapperRedis implements IClientDataMapper {
     }
     
     update(id: string, clientFieldsToUpdate: Object): Promise<void> {
-        this.getById(id).then((client) => {
-            return new Promise((resolve, reject) => {
-                this.redisClient.set(this.getKeyForId(client.id), JSON.stringify(client), (err) => {
+        return this.getById(id).then((client) => {
+            return new Promise<void>((resolve, reject) => {
+                this.redisClient.set(this.getKeyForId(client.id), JSON.stringify(client), (err, a, b) => {
+                    console.log("SET", err, a, b);
                     if (err) {
                         return reject(err);
                     }

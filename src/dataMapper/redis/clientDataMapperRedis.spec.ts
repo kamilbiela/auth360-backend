@@ -13,27 +13,35 @@ describe("ClientDataMapperRedis @functional @redis", () => {
 	let client: Client = {
 		id: "test:id123",
 		secret: "secret123",
-		name: "name123",
+		name: "name123" + Math.random(),
 		websiteURL: "http://localhost",
 		redirectUri: "http://redirectUri",
-		type: ClientTypeEnum = ClientTypeEnum.PUBLIC
+		type: ClientTypeEnum.PUBLIC
 	};
+
+	beforeEach((done) => {
+		redisClient.flushdb((err) => {
+			if (err) {
+				throw err;
+			}
+
+			done();
+		})
+	});
 	
 	describe("insert", () => {
-		it("should save cl ", (done) => {
+		it("should insert client to redis", (done) => {
 			clientDataMapperRedis.insert(client).then(() => {
 				redisClient.get(`client:${client.id}`, (err, result) => {
-					console.log("Test");
-					console.log(err);
-					console.log(result);
+					let c: Client = JSON.parse(result);
+					assert.equal(c.name, client.name);
 					done();
 				})
 			})
-			
 		})
 	});
-
-	it("update", () => {
+/*	
+		it("update", () => {
 )
 	});
 
@@ -44,4 +52,5 @@ describe("ClientDataMapperRedis @functional @redis", () => {
 	it("getById", () => {
 
 	});
+*/	
 });
