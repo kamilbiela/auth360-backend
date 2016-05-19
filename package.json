@@ -19,7 +19,8 @@
     "redis": "^2.6.0-2",
     "ts-node": "^0.7.2",
     "typescript": "^1.8.10",
-    "winston": "^2.2.0"
+    "winston": "^2.2.0",
+    "yargs": "^4.7.1"
   },
   "devDependencies": {
     "chai": "^3.5.0",

@@ -1,5 +1,3 @@
-Todo
-
-Version 2:
+- [] add CLI interface
 - implement confidental clients support
   - [] RFC 6749 2.3 - implement client authentication for

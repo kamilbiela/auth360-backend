@@ -1,3 +1,4 @@
 require("ts-node").register({});
 
-require("./main");
+var main = require("./main");
+main.startHttpServer();

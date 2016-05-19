@@ -1,14 +1,11 @@
 import {Client, ClientTypeEnum} from "./Client";
+import * as _ from "lodash";
 
 export class ClientBuilder {
     private id: string = null;
     private name: string = null;
     private websiteURI: string = null;
     private redirectURI: string = null;
-
-    constructor(
-    ) {
-    }
 
     setName(name: string): void {
         this.name = name;
@@ -27,6 +24,14 @@ export class ClientBuilder {
     }
 
     getResult(): Client {
+        if (_.isEmpty(this.name)) {
+            throw new Error("Client name can't be empty");
+        }
+        
+        if (_.isEmpty(this.redirectURI)) {
+            throw new Error("Client redirect uri can't be empty");
+        }
+        
         return new Client(
             this.name,
             this.websiteURI,

@@ -7,3 +7,4 @@
 /// <reference path="main/ambient/node/index.d.ts" />
 /// <reference path="main/ambient/redis/index.d.ts" />
 /// <reference path="main/ambient/winston/index.d.ts" />
+/// <reference path="main/ambient/yargs/index.d.ts" />

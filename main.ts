@@ -4,6 +4,10 @@ import {configLoader} from "./src/configLoader";
 let config = configLoader();
 let app = new App(config);
 
-app.startHttpServer().then(() => {
-    console.log("running");
-});
+export let startHttpServer = () => {
+    app.startHttpServer();
+};
+
+export let startCli = () => {
+    app.startCli();
+};
