@@ -71,13 +71,33 @@ export class App {
     };
 
     startCli(): void {
-        let argv = yargs.command("client:create", "Create new client")
-            .demand("name")
-            .command("client:delete", "Delete client")
-            .demand("id")
+        let argv = (<any>yargs)
+            .command("client:create", "Create new client", (yargs: yargs.Argv) => {
+                return yargs
+                    .option("id")
+                    .demand("name")
+                    .demand("redirectUri")
+                ;
+            }, (argv: any) => {
+                let clientBuilder = this.container.getClientBuilderInstance();
+                clientBuilder.setName(argv.name);
+                clientBuilder.setRedirectUri(argv.redirectUri);
+                clientBuilder.setId(argv.id || null);
+                
+                let client = clientBuilder.getResult();
+                this.container.getClientDataMapper().insert(client).then(() => {
+                    this.tearDown();
+                });
+            })
+            
+            .command("client:delete", "Delete client", (yargs: yargs.Argv) => {
+                return yargs.demand("id");
+            }, (argv: any) => {
+                console.log("delete client", argv);
+                this.tearDown();
+            })
+        
             .argv;
 
-        console.log(argv);
-        this.tearDown();
     }
 }
