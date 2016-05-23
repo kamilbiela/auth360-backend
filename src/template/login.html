@@ -2,11 +2,16 @@
 
 {% block body %}
     {% parent %}
-<form method="POST">
-    Login: <input type="text" name="login" />
-    <br />
-    Password: <input type="password" name="password" />
-    <br />
-    <input type="submit" />
-</form>
+    {% if loginOrPasswordError %}
+        <div>
+            Wrong username or password.
+        </div>
+    {% endif %}
+    <form method="POST">
+        Login: <input type="text" name="login" />
+        <br />
+        Password: <input type="password" name="password" />
+        <br />
+        <input type="submit" />
+    </form>
 {% endblock %}
