@@ -5,7 +5,9 @@ let config = configLoader();
 let app = new App(config);
 
 export let startHttpServer = () => {
-    app.startHttpServer();
+    app.startHttpServer().then(null, (err) => {
+        console.error(err);
+    })
 };
 
 export let startCli = () => {

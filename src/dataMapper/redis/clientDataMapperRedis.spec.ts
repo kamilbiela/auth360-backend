@@ -2,7 +2,7 @@ import {assert} from "chai";
 import * as redis from "redis";
 import * as _ from "lodash";
 import {Client, ClientTypeEnum} from "../../model/client";
-import {ClientDataMapperRedis} from "./clientDataMapper";
+import {ClientDataMapperRedis} from "./clientDataMapperRedis";
 
 describe("@functional @redis ClientDataMapperRedis", () => {
     let redisClient = redis.createClient();
