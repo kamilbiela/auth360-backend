@@ -4,12 +4,15 @@ export enum ClientTypeEnum {
     PUBLIC
 } 
 
+export type ClientId = string | number;
+
 export class Client {
+    id: ClientId;
+    
     constructor(
         public name: string,
         public websiteURL: string,
         public redirectUri: string,
-        public id: string,
         public secret: string,
         public type: ClientTypeEnum = ClientTypeEnum.PUBLIC
     ) {

@@ -7,7 +7,7 @@ import * as swig from "swig";
 
 import {ServiceContainer} from "./model/ServiceContainer";
 import {Config} from "./model/config";
-import {ClientDataMapperRedis} from "./dataMapper/redis/clientDataMapperRedis";
+import {ClientDataMapperRedis} from "./dataMapper/redis/ClientDataMapperRedis";
 import * as routes from "./route/index";
 
 export class App {

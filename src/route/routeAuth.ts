@@ -42,6 +42,8 @@ export let authPOST = (): Hapi.IRouteConfiguration => {
             if (!(request.payload.login && request.payload.password)) {
                	return response.view(templateName, {loginOrPasswordError: true});
             }
+
+            
         },
         config: {
             validate: commonValidation
