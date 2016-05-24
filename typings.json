@@ -8,6 +8,7 @@
     "joi": "registry:dt/joi#9.0.0+20160514175131",
     "lodash": "registry:dt/lodash#3.10.0+20160330154726",
     "mocha": "registry:dt/mocha#2.2.5+20160317120654",
+    "moment": "registry:dt/moment#2.8.0+20160316155526",
     "node": "registry:dt/node#4.0.0+20160412142033",
     "node-uuid": "registry:dt/node-uuid#0.0.0+20160316155526",
     "promise": "registry:dt/promise#7.1.1+20160316171810",

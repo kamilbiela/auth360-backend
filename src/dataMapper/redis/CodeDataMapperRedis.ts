@@ -1,12 +1,17 @@
 import {Promise} from "es6-promise";
 import {Code} from "../../model/Code";
+import {ClientId} from "../../model/Client";
 import {IRedisClient} from "../../service/IRedisClient";
 import {ICodeDataMapper} from "../ICodeDataMapper";
+import {IUuidGenerator} from "../../service/IUuidGenerator";
+
 import * as _ from "lodash";
+import * as moment from "moment";
 
 export class CodeDataMapperRedis implements ICodeDataMapper {
     constructor(
-        private redisClient: IRedisClient
+        private redisClient: IRedisClient,
+        private uuidGenerator: IUuidGenerator
     ) {
     }
     
@@ -14,9 +19,16 @@ export class CodeDataMapperRedis implements ICodeDataMapper {
         return `code:${id}`;
     }
 
-    insert(code: Code): Promise<string> {
+    createAndInsert(clientId: ClientId): Promise<Code> {
         return new Promise<string>((resolve, reject) => {
-            this.redisClient.setnx(this.getKeyForId(code.id), JSON.stringify(code), (err) => {
+            let seconds = 10 * 60; // @todo make it configurable
+            let code = new Code(
+                this.uuidGenerator.generate(),
+                moment().add(seconds, "seconds").toDate(),
+                this.uuidGenerator.generate(),
+                clientId
+            );
+            this.redisClient.setex(this.getKeyForId(code.id), seconds, JSON.stringify(code), (err) => {
                 if (err) {
                     return reject(err);
                 }

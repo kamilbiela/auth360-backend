@@ -1,8 +1,16 @@
+import {IClientDataMapper} from "../dataMapper/IClientDataMapper";
+import {ICodeDataMapper} from "../dataMapper/ICodeDataMapper";
+
 import * as Hapi from "hapi";
 import * as Joi from "joi";
+import * as url from "url";
+import * as _ from "lodash";
+import {parse} from "querystring";
 
 let authorizePath = "/authorize";
 let templateName = "login.html";
+
+// @todo PROPER ERROR HANDLING, SEE 4.1.2
 
 let commonValidation = {
     query: {
@@ -34,7 +42,10 @@ export let authGET = (): Hapi.IRouteConfiguration => {
     }
 };
 
-export let authPOST = (): Hapi.IRouteConfiguration => {
+export let authPOST = (
+    private clientDataMapper: IClientDataMapper,
+    private codeDataMapper: ICodeDataMapper
+): Hapi.IRouteConfiguration => {
     return {
         method: "POST",
         path: authorizePath,
@@ -42,8 +53,32 @@ export let authPOST = (): Hapi.IRouteConfiguration => {
             if (!(request.payload.login && request.payload.password)) {
                	return response.view(templateName, {loginOrPasswordError: true});
             }
-
             
+            let redirectUri: string;
+            
+            this.clientDataMapper.getById(request.query.client_id).then((client) => {
+                if (request.query.redirect_uri !== client.redirectUri) {
+                   throw new Error("Wrong redirect uri");
+                }
+                
+                redirectUri = client.redirectUri;
+                
+                return this.codeDataMapper.createAndInsert();
+            }).then((code) => {
+                // add code to url
+                let parsedUrl = url.parse(redirectUri, true);
+                parsedUrl.query.code = code;
+                
+                if (!_.isUndefined(request.query.state)) {
+                    parsedUrl.query.state = request.query.state
+                }
+                
+                redirectUri = url.format(parsedUrl);
+                
+                return response.redirect(redirectUri);
+            }).then(null, (err) => {
+                return response(err);
+            });
         },
         config: {
             validate: commonValidation

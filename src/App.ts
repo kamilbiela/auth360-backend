@@ -6,7 +6,7 @@ import * as yargs from "yargs";
 import * as swig from "swig";
 
 import {ServiceContainer} from "./model/ServiceContainer";
-import {Config} from "./model/config";
+import {Config} from "./model/Config";
 import {ClientDataMapperRedis} from "./dataMapper/redis/ClientDataMapperRedis";
 import * as routes from "./route/index";
 
