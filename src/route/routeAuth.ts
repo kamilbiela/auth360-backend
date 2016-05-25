@@ -43,8 +43,8 @@ export let authGET = (): Hapi.IRouteConfiguration => {
 };
 
 export let authPOST = (
-    private clientDataMapper: IClientDataMapper,
-    private codeDataMapper: ICodeDataMapper
+    clientDataMapper: IClientDataMapper,
+    codeDataMapper: ICodeDataMapper
 ): Hapi.IRouteConfiguration => {
     return {
         method: "POST",

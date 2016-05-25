@@ -3,9 +3,12 @@ import {ClientId} from "./Client";
 export type CodeId = string;
 
 export class Code {
-    id: CodeId;
-    // if possible, code should have ttl set on db level
-    expiresAt: Date;
-    value: string;
-    clientId: ClientId;
+    constructor(
+        public id: CodeId,
+        // if possible, code should have ttl set on db level
+        public expiresAt: Date,
+        public value: string,
+        public clientId: ClientId
+    ) {
+    }
 }

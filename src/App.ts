@@ -4,10 +4,12 @@ import {Promise} from "es6-promise";
 import * as winston from "winston";
 import * as yargs from "yargs";
 import * as swig from "swig";
+import * as uuid from "node-uuid";
 
 import {ServiceContainer} from "./model/ServiceContainer";
 import {Config} from "./model/Config";
 import {ClientDataMapperRedis} from "./dataMapper/redis/ClientDataMapperRedis";
+import {UuidGenerator} from "./model/UuidGenerator";
 import * as routes from "./route/index";
 
 export class App {
@@ -31,12 +33,15 @@ export class App {
         });
 
         let clientDataMapper = new ClientDataMapperRedis(this.redisClient);
+        
+        let uuidGenerator = new UuidGenerator(uuid);
 
         this.container = new ServiceContainer(
             config,
             this.redisClient,
             logger,
-            clientDataMapper
+            clientDataMapper,
+            uuidGenerator
         );
     }
     
@@ -106,7 +111,6 @@ export class App {
                 let clientBuilder = this.container.getClientBuilderInstance();
                 clientBuilder.setName(argv.name);
                 clientBuilder.setRedirectUri(argv.redirectUri);
-                clientBuilder.setId(argv.id || null);
                 
                 let client = clientBuilder.getResult();
                 this.container.getClientDataMapper().insert(client).then(() => {

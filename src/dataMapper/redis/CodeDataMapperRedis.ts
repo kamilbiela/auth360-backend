@@ -20,7 +20,7 @@ export class CodeDataMapperRedis implements ICodeDataMapper {
     }
 
     createAndInsert(clientId: ClientId): Promise<Code> {
-        return new Promise<string>((resolve, reject) => {
+        return new Promise<Code>((resolve, reject) => {
             let seconds = 10 * 60; // @todo make it configurable
             let code = new Code(
                 this.uuidGenerator.generate(),
@@ -33,7 +33,7 @@ export class CodeDataMapperRedis implements ICodeDataMapper {
                     return reject(err);
                 }
                 
-                return resolve(code.id);
+                return resolve(code);
             });
         });
     }
