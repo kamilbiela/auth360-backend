@@ -11,4 +11,8 @@ export class UserDataMapperRedis extends BaseDataMapperRedis<User, UserId> imple
     ) {
         super(redisClient);
     }
+    
+    public getByUsername(user: string): Promise<User> {
+        return this.getById(user);
+    }
 }
