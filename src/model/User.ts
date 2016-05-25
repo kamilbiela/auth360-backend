@@ -1,8 +1,7 @@
-export type UserId = string|number;
+export type UserId = string;
 
 export class User {
     id: UserId;
-    username: string;
     email: string;
     password: string;
     salt: string;

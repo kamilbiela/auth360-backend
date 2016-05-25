@@ -5,6 +5,7 @@ import {IRedisClient} from "../service/IRedisClient";
 import {ILogger} from "../service/ILogger";
 import {IClientDataMapper} from "../dataMapper/IClientDataMapper";
 import {IUuidGenerator} from "../service/IUuidGenerator";
+import {IUserDataMapper} from "../dataMapper/IUserDataMapper";
 
 export class ServiceContainer {
     constructor(
@@ -12,7 +13,8 @@ export class ServiceContainer {
         private redisClient: IRedisClient,
         private logger: ILogger,
         private clientDataMapper: IClientDataMapper,
-        private uuidGenerator: IUuidGenerator
+        private uuidGenerator: IUuidGenerator,
+        private userDataMapper: IUserDataMapper
     ) {
     }
     
@@ -38,6 +40,10 @@ export class ServiceContainer {
     
     getClientDataMapper(): IClientDataMapper {
         return this.clientDataMapper;
+    }
+    
+    getUserDataMapper(): IUserDataMapper {
+        return this.userDataMapper
     }
     
     getUuidGenerator(): IUuidGenerator {

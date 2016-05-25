@@ -1,11 +1,11 @@
 import {IClientDataMapper} from "../dataMapper/IClientDataMapper";
 import {ICodeDataMapper} from "../dataMapper/ICodeDataMapper";
+import {IUserDataMapper} from "../dataMapper/IUserDataMapper";
 
 import * as Hapi from "hapi";
 import * as Joi from "joi";
 import * as url from "url";
 import * as _ from "lodash";
-import {parse} from "querystring";
 
 let authorizePath = "/authorize";
 let templateName = "login.html";
@@ -44,7 +44,8 @@ export let authGET = (): Hapi.IRouteConfiguration => {
 
 export let authPOST = (
     clientDataMapper: IClientDataMapper,
-    codeDataMapper: ICodeDataMapper
+    codeDataMapper: ICodeDataMapper,
+    userDataMapper: IUserDataMapper
 ): Hapi.IRouteConfiguration => {
     return {
         method: "POST",
@@ -53,6 +54,10 @@ export let authPOST = (
             if (!(request.payload.login && request.payload.password)) {
                	return response.view(templateName, {loginOrPasswordError: true});
             }
+            
+            userDataMapper.getById(request.payload.login).then((user) => {
+                
+            });
             
             let redirectUri: string;
             

@@ -4,7 +4,7 @@ export enum ClientTypeEnum {
     PUBLIC
 } 
 
-export type ClientId = string | number;
+export type ClientId = string;
 
 export class Client {
     id: ClientId;

@@ -8,26 +8,26 @@ interface ObjectAttributes {
 
 export class BaseDataMapperRedis<T extends ObjectAttributes, TId> {
     protected objectName: string = null;
-    protected stringifyFunc: any = null; // @todo proper function type declaration 
-    
+    protected stringifyFunc: any = null; // @todo proper function type declaration
+
     constructor(
         protected redisClient: IRedisClient = null
     ) {
     }
-    
+
     private getKeyForId(id: TId): string {
         if (_.isEmpty(this.objectName)) {
             throw new Error("this.objectName is empty. Fix code.");
         }
-        
+
         return `${this.objectName}:${id}`;
     }
-    
+
     private stringify(data: T) {
         if (_.isFunction(this.stringifyFunc)) {
             return JSON.stringify(data, this.stringifyFunc)
         }
-        
+
         return JSON.stringify(data);
     }
 
