@@ -1,4 +1,4 @@
-import {Client, ClientTypeEnum} from "./Client";
+import {Client, ClientTypeEnum} from "../Client";
 import * as _ from "lodash";
 
 export class ClientBuilder {

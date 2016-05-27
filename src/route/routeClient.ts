@@ -1,5 +1,5 @@
-import {IClientDataMapper} from "../dataMapper/IClientDataMapper";
-import {ClientBuilder} from "../model/ClientBuilder";
+import {IClientDataMapper} from "../service/dataMapper/IClientDataMapper";
+import {ClientBuilder} from "../service/builder/ClientBuilder";
 import * as Hapi from "hapi";
 
 export let clientGET = (clientDataMapper: IClientDataMapper): Hapi.IRouteConfiguration => {

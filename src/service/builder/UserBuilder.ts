@@ -1,4 +1,4 @@
-import {User, UserId} from "../model/User";
+import {User, UserId} from "../../model/User";
 
 export class UserBuilder {
     constructor(

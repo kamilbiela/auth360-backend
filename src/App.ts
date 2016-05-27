@@ -6,10 +6,10 @@ import * as yargs from "yargs";
 import * as swig from "swig";
 import * as uuid from "node-uuid";
 
-import {ServiceContainer} from "./model/ServiceContainer";
+import {ServiceContainer} from "./service/ServiceContainer";
 import {Config} from "./model/Config";
 import {ClientDataMapperRedis} from "./dataMapper/redis/ClientDataMapperRedis";
-import {UuidGenerator} from "./model/UuidGenerator";
+import {UuidGenerator} from "./service/UuidGenerator";
 import * as routes from "./route/index";
 
 export class App {

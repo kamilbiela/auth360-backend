@@ -1,11 +1,8 @@
 import * as redis from "redis";
-import {ClientBuilder} from "./ClientBuilder.ts";
-import {Config} from "./Config";
-import {IRedisClient} from "../service/IRedisClient";
-import {ILogger} from "../service/ILogger";
-import {IClientDataMapper} from "../dataMapper/IClientDataMapper";
-import {IUuidGenerator} from "../service/IUuidGenerator";
-import {IUserDataMapper} from "../dataMapper/IUserDataMapper";
+import {ClientBuilder} from "builder/ClientBuilder.ts";
+import {Config} from "../model/Config";
+import {IClientDataMapper, IUserDataMapper} from "./dataMapper";
+import {IRedisClient, ILogger, IUuidGenerator} from "./index";
 
 export class ServiceContainer {
     constructor(
@@ -14,7 +11,8 @@ export class ServiceContainer {
         private logger: ILogger,
         private clientDataMapper: IClientDataMapper,
         private uuidGenerator: IUuidGenerator,
-        private userDataMapper: IUserDataMapper
+        private userDataMapper: IUserDataMapper,
+        private codeGenerator: any
     ) {
     }
     

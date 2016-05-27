@@ -1,6 +1,6 @@
 import {User, UserId} from "../../model/User";
 import {IRedisClient} from "../../service/IRedisClient";
-import {IUserDataMapper} from "../IUserDataMapper";
+import {IUserDataMapper} from "../../service/dataMapper/IUserDataMapper";
 import {BaseDataMapperRedis} from "./BaseDataMapperRedis";
 
 export class UserDataMapperRedis extends BaseDataMapperRedis<User, UserId> implements IUserDataMapper {

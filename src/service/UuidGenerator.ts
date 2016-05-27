@@ -1,4 +1,4 @@
-import {IUuidGenerator} from "../service/IUuidGenerator";
+import {IUuidGenerator} from "./IUuidGenerator";
 
 export class UuidGenerator implements IUuidGenerator {
     constructor(

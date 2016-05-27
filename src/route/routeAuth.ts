@@ -1,6 +1,6 @@
-import {IClientDataMapper} from "../dataMapper/IClientDataMapper";
-import {ICodeDataMapper} from "../dataMapper/ICodeDataMapper";
-import {IUserDataMapper} from "../dataMapper/IUserDataMapper";
+import {IClientDataMapper} from "../service/dataMapper/IClientDataMapper";
+import {ICodeDataMapper} from "../service/dataMapper/ICodeDataMapper";
+import {IUserDataMapper} from "../service/dataMapper/IUserDataMapper";
 
 import * as Hapi from "hapi";
 import * as Joi from "joi";

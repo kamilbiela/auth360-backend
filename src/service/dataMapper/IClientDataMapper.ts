@@ -1,4 +1,4 @@
-import {Client, ClientId} from "../model/Client";
+import {Client, ClientId} from "../../model/Client";
 import {Promise} from "es6-promise";
 
 export interface IClientDataMapper {
