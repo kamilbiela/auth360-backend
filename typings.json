@@ -1,5 +1,6 @@
 {
   "ambientDependencies": {
+    "bcrypt": "registry:dt/bcrypt#0.0.0+20160316155526",
     "chai": "registry:dt/chai#3.4.0+20160317120654",
     "es6-promise": "registry:dt/es6-promise#0.0.0+20160423074304",
     "hapi": "registry:dt/hapi#13.0.0+20160423060411",

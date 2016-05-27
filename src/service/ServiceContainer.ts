@@ -3,6 +3,7 @@ import {ClientBuilder} from "builder/ClientBuilder.ts";
 import {Config} from "../model/Config";
 import {IClientDataMapper, IUserDataMapper} from "./dataMapper";
 import {IRedisClient, ILogger, IUuidGenerator} from "./index";
+import {IPasswordHasher} from "./IPasswordHasher";
 
 export class ServiceContainer {
     constructor(
@@ -12,7 +13,7 @@ export class ServiceContainer {
         private clientDataMapper: IClientDataMapper,
         private uuidGenerator: IUuidGenerator,
         private userDataMapper: IUserDataMapper,
-        private codeGenerator: any
+        private passwordHasher: IPasswordHasher
     ) {
     }
     
@@ -46,5 +47,9 @@ export class ServiceContainer {
     
     getUuidGenerator(): IUuidGenerator {
         return this.uuidGenerator;
+    }
+    
+    getPasswordHasher(): IPasswordHasher {
+        return this.passwordHasher;
     }
 }

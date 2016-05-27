@@ -1,30 +1,28 @@
 import {User, UserId} from "../../model/User";
+import {IPasswordHasher} from "../IPasswordHasher";
 
 export class UserBuilder {
     constructor(
-        private passwordHasher: any
+        private passwordHasher: IPasswordHasher
     ) {
         
     }
 
-    id: UserId;
     email: string;
     password: string;
     salt: string;
     
-    setId(id: UserId) {
-        this.id = id;
-    }
-    
     setEmail(email: string) {
-        
+        this.email = email;
     }
     
     setPassword(password: string) {
-        
+        this.passwordHasher.generateSalt().then((salt) => {
+            this.salt = salt;
+        })
     }
     
-    getResult(): User {
+    getResult(): Promise<User> {
         
     }
 }

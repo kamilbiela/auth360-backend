@@ -15,4 +15,8 @@ export class UserDataMapperRedis extends BaseDataMapperRedis<User, UserId> imple
     public getByUsername(user: string): Promise<User> {
         return this.getById(user);
     }
+    
+    public hasUsername(username: UserId): Promise<boolean> {
+        return this.hasId(username);
+    }
 }

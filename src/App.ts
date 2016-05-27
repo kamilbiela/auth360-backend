@@ -11,6 +11,7 @@ import {Config} from "./model/Config";
 import {ClientDataMapperRedis} from "./dataMapper/redis/ClientDataMapperRedis";
 import {UuidGenerator} from "./service/UuidGenerator";
 import * as routes from "./route/index";
+import {BCryptPasswordHasher} from "./service/passwordHasher/BCryptPasswordHasher";
 
 export class App {
     private container: ServiceContainer = null;
@@ -36,6 +37,8 @@ export class App {
         
         let uuidGenerator = new UuidGenerator(uuid);
 
+        let passwordHasher = new BCryptPasswordHasher();
+        
         this.container = new ServiceContainer(
             config,
             this.redisClient,
