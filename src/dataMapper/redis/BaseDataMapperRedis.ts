@@ -1,7 +1,6 @@
 import * as _ from "lodash";
 import {IRedisClient} from "../../service/IRedisClient";
 import {Promise} from "es6-promise";
-import {IUuidGenerator} from "../../service/IUuidGenerator";
 
 interface ObjectAttributes {
     id: any
@@ -12,8 +11,7 @@ export class BaseDataMapperRedis<T extends ObjectAttributes, TId> {
     protected stringifyFunc: any = null; // @todo proper function type declaration
 
     constructor(
-        protected redisClient: IRedisClient = null,
-        protected uuidGenerator: IUuidGenerator
+        protected redisClient: IRedisClient = null
     ) {
     }
 

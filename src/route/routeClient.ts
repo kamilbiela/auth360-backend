@@ -13,22 +13,24 @@ export let clientGET = (clientDataMapper: IClientDataMapper): Hapi.IRouteConfigu
 };
 
 export let clientPOST = (
-    clientBuilder: ClientBuilder,
+    clientBuilder: () => ClientBuilder,
     clientDataMapper: IClientDataMapper
 ): Hapi.IRouteConfiguration => {
     return {
         method: "POST",
         path: `/api/client`,
         handler: (request, reply) => {
-            clientBuilder.setName(request.payload["name"]);
-            clientBuilder.setRedirectUri(request.payload["redirectUri"]);
-            clientBuilder.setWebsiteURL(request.payload["websiteURL"]);
-            let client = clientBuilder.getResult();
-
-            clientDataMapper.insert(client).then(() => {
-                return reply(client);
-            }).catch((err) => {
-                return reply(err);
+            let cb = clientBuilder();
+            cb.setName(request.payload["name"]);
+            cb.setRedirectUri(request.payload["redirectUri"]);
+            cb.setWebsiteURL(request.payload["websiteURL"]);
+            
+            return cb.getResult().then((client) => {
+                return clientDataMapper.insert(client).then(() => {
+                    return reply(client);
+                }).catch((err) => {
+                    return reply(err);
+                });
             });
         }
     }

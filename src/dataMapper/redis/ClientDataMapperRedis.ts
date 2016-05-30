@@ -5,4 +5,8 @@ import {BaseDataMapperRedis} from "./BaseDataMapperRedis";
 
 export class ClientDataMapperRedis extends BaseDataMapperRedis<Client, ClientId> implements IClientDataMapper {
     protected objectName = "client";
+    
+    // constructor(redisClient: IRedisClient) {
+    //     super(redisClient);
+    // }
 }

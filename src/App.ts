@@ -13,6 +13,7 @@ import * as routes from "./route/index";
 import {BCryptPasswordHasher} from "./service/passwordHasher/BCryptPasswordHasher";
 import {ClientDataMapperRedis} from "./dataMapper/redis/ClientDataMapperRedis";
 import {UserDataMapperRedis} from "./dataMapper/redis/UserDataMapperRedis";
+import {CodeDataMapperRedis} from "./dataMapper/redis/CodeDataMapperRedis";
 
 export class App {
     private container: ServiceContainer = null;
@@ -40,8 +41,9 @@ export class App {
             config: config,
             redisClient: this.redisClient,
             logger: logger,
-            clientDataMapper: new ClientDataMapperRedis(this.redisClient, uuidGenerator),
-            userDataMapper: new UserDataMapperRedis(this.redisClient, uuidGenerator),
+            clientDataMapper: new ClientDataMapperRedis(this.redisClient),
+            userDataMapper: new UserDataMapperRedis(this.redisClient),
+            codeDataMapper: new CodeDataMapperRedis(this.redisClient),
             uuidGenerator: new UuidGenerator(),
             passwordHasher: new BCryptPasswordHasher(),
         });
@@ -56,7 +58,7 @@ export class App {
         return [
             routes.indexGET(c.getLogger()),
             routes.clientGET(c.getClientDataMapper()),
-            routes.clientPOST(c.getClientBuilderInstance(), this.container.getClientDataMapper()),
+            routes.clientPOST(c.getClientBuilder(), this.container.getClientDataMapper()),
             routes.authGET()
         ];
     }
@@ -110,14 +112,15 @@ export class App {
                     .demand("redirectUri")
                 ;
             }, (argv: any) => {
-                let clientBuilder = this.container.getClientBuilderInstance();
+                let clientBuilder = this.container.getClientBuilder()();
                 clientBuilder.setName(argv.name);
                 clientBuilder.setRedirectUri(argv.redirectUri);
                 
-                let client = clientBuilder.getResult();
-                this.container.getClientDataMapper().insert(client).then(() => {
-                    this.tearDown();
-                });
+                clientBuilder.getResult().then((client) => {
+                    return this.container.getClientDataMapper().insert(client).then(() => {
+                        this.tearDown();
+                    });
+                })
             })
             
             .command("client:delete", "Delete client", (yargs: yargs.Argv) => {

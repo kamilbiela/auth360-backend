@@ -6,6 +6,7 @@ import * as Hapi from "hapi";
 import * as Joi from "joi";
 import * as url from "url";
 import * as _ from "lodash";
+import {CodeManager} from "../service/CodeManager";
 
 let authorizePath = "/authorize";
 let templateName = "login.html";
@@ -44,7 +45,7 @@ export let authGET = (): Hapi.IRouteConfiguration => {
 
 export let authPOST = (
     clientDataMapper: IClientDataMapper,
-    codeDataMapper: ICodeDataMapper,
+    codeManager: CodeManager,
     userDataMapper: IUserDataMapper
 ): Hapi.IRouteConfiguration => {
     return {
@@ -60,7 +61,7 @@ export let authPOST = (
                    throw new Error("Wrong redirect uri");
                 }
                 
-                return [codeDataMapper.createAndInsert(), client.redirectUri];
+                return [codeManager.createAndInsert(client.id), client.redirectUri];
             }).then(([code, redirectUri]) => {
                 // add code to url
                 let parsedUrl = url.parse(redirectUri, true);

@@ -1,14 +1,17 @@
 import * as moment from "moment";
 import {ClientId} from "../../model/Client";
 import {Code} from "../../model/Code";
+import {IUuidGenerator} from "../IUuidGenerator";
+import {Promise} from "es6-promise";
 
 export class CodeBuilder {
     clientId: ClientId;
     expiresAt: Date;
     value: string;
     
-    constructor() {
-        
+    constructor(
+        private uuidGenerator: IUuidGenerator
+    ) {
     }
     
     setExpiresIn(seconds: number) {
@@ -23,12 +26,14 @@ export class CodeBuilder {
         this.value = value;
     }
     
-    getResult(): Code {
-        return {
-            id: null,
-            clientId: this.clientId,
-            expiresAt: this.expiresAt,
-            value: this.value
-        }
+    getResult(): Promise<Code> {
+        return new Promise((resolve) => {
+            return resolve({
+                id: this.uuidGenerator.generate(),
+                    clientId: this.clientId,
+                expiresAt: this.expiresAt,
+                value: this.uuidGenerator.generate()
+            });
+        });
     }
 }

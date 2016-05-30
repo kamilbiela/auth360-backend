@@ -3,9 +3,11 @@ import {IPasswordHasher} from "../IPasswordHasher";
 import {Promise} from "es6-promise";
 
 import * as _ from "lodash";
+import {IUuidGenerator} from "../IUuidGenerator";
 
 export class UserBuilder {
     constructor(
+        private uuidGenerator: IUuidGenerator,
         private passwordHasher: IPasswordHasher
     ) {
     }
@@ -34,7 +36,7 @@ export class UserBuilder {
         
         return this.saltPromise.then(() => {
             return {
-                id: null,
+                id: this.uuidGenerator.generate(),
                 email: this.email,
                 password: this.password,
                 salt: this.salt
