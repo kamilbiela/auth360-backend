@@ -1,6 +1,6 @@
 export type UserId = string;
 
-export class User {
+export interface User {
     id: UserId;
     email: string;
     password: string;

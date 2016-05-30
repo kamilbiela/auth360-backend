@@ -5,12 +5,6 @@ import {BaseDataMapperRedis} from "./BaseDataMapperRedis";
 
 export class UserDataMapperRedis extends BaseDataMapperRedis<User, UserId> implements IUserDataMapper {
     protected objectName = "user";
-
-    constructor(
-        redisClient: IRedisClient
-    ) {
-        super(redisClient);
-    }
     
     public getByUsername(user: string): Promise<User> {
         return this.getById(user);

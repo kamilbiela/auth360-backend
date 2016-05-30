@@ -1,4 +1,4 @@
-export class Config {
+export interface Config {
     http: {
         port: number;
     };

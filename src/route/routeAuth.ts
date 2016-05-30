@@ -55,21 +55,13 @@ export let authPOST = (
                	return response.view(templateName, {loginOrPasswordError: true});
             }
             
-            userDataMapper.getById(request.payload.login).then((user) => {
-                
-            });
-            
-            let redirectUri: string;
-            
-            this.clientDataMapper.getById(request.query.client_id).then((client) => {
+            clientDataMapper.getById(request.query.client_id).then((client) => {
                 if (request.query.redirect_uri !== client.redirectUri) {
                    throw new Error("Wrong redirect uri");
                 }
                 
-                redirectUri = client.redirectUri;
-                
-                return this.codeDataMapper.createAndInsert();
-            }).then((code) => {
+                return [codeDataMapper.createAndInsert(), client.redirectUri];
+            }).then(([code, redirectUri]) => {
                 // add code to url
                 let parsedUrl = url.parse(redirectUri, true);
                 parsedUrl.query.code = code;

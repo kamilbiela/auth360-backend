@@ -1,19 +1,23 @@
 import * as redis from "redis";
-import {ClientBuilder} from "builder/ClientBuilder.ts";
+import {ClientBuilder} from "./builder/ClientBuilder.ts";
 import {Config} from "../model/Config";
 import {IClientDataMapper, IUserDataMapper} from "./dataMapper";
 import {IRedisClient, ILogger, IUuidGenerator} from "./index";
 import {IPasswordHasher} from "./IPasswordHasher";
 
+interface ServiceContainerParams {
+    config: Config;
+    redisClient: IRedisClient;
+    logger: ILogger;
+    clientDataMapper: IClientDataMapper;
+    uuidGenerator: IUuidGenerator;
+    userDataMapper: IUserDataMapper;
+    passwordHasher: IPasswordHasher;
+}
+
 export class ServiceContainer {
     constructor(
-        private config: Config,
-        private redisClient: IRedisClient,
-        private logger: ILogger,
-        private clientDataMapper: IClientDataMapper,
-        private uuidGenerator: IUuidGenerator,
-        private userDataMapper: IUserDataMapper,
-        private passwordHasher: IPasswordHasher
+        private containerParams: ServiceContainerParams
     ) {
     }
     
@@ -22,34 +26,34 @@ export class ServiceContainer {
     }
     
     getRedisClient(): IRedisClient {
-        if (this.redisClient === null) {
-            this.redisClient = redis.createClient();
+        if (this.containerParams.redisClient === null) {
+            this.containerParams.redisClient = redis.createClient();
         }
         
-        return this.redisClient;
+        return this.containerParams.redisClient;
     }
     
     getConfig(): Config {
-        return this.config;
+        return this.containerParams.config;
     }
     
     getLogger(): ILogger {
-        return this.logger;
+        return this.containerParams.logger;
     }
     
     getClientDataMapper(): IClientDataMapper {
-        return this.clientDataMapper;
+        return this.containerParams.clientDataMapper;
     }
     
     getUserDataMapper(): IUserDataMapper {
-        return this.userDataMapper
+        return this.containerParams.userDataMapper
     }
     
     getUuidGenerator(): IUuidGenerator {
-        return this.uuidGenerator;
+        return this.containerParams.uuidGenerator;
     }
     
     getPasswordHasher(): IPasswordHasher {
-        return this.passwordHasher;
+        return this.containerParams.passwordHasher;
     }
 }

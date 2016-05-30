@@ -3,15 +3,15 @@ import * as _ from "lodash";
 
 export class ClientBuilder {
     private name: string = null;
-    private websiteURI: string = null;
+    private websiteUrl: string = null;
     private redirectURI: string = null;
 
     setName(name: string): void {
         this.name = name;
     }
 
-    setWebsiteURL(websiteURI: string): void {
-        this.websiteURI = websiteURI;
+    setWebsiteURL(websiteUrl: string): void {
+        this.websiteUrl = websiteUrl;
     }
 
     setRedirectUri(redirectURI: string): void {
@@ -27,12 +27,13 @@ export class ClientBuilder {
             throw new Error("Client redirect uri can't be empty");
         }
         
-        return new Client(
-            this.name,
-            this.websiteURI,
-            this.redirectURI,
-            "" + Math.round(Math.random() * 10000000), //@todo fix this
-            ClientTypeEnum.PUBLIC // @todo v2 add support for confidental clients
-        )
+        return {
+            id: null,
+            name: this.name,
+            websiteUrl: this.websiteUrl,
+            redirectUri: this.redirectURI,
+            secret: "" + Math.round(Math.random() * 10000000), //@todo fix this
+            type: ClientTypeEnum.PUBLIC // @todo v2 add support for confidental clients
+        }
     }
 }

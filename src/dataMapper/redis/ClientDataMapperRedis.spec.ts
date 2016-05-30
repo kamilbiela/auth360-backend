@@ -4,6 +4,7 @@ import * as _ from "lodash";
 import {Client, ClientTypeEnum} from "../../model/Client";
 import {ClientDataMapperRedis} from "./ClientDataMapperRedis";
 
+// @todo change to BaseDataMapperRedis test
 describe("@functional @redis ClientDataMapperRedis", () => {
     let redisClient = redis.createClient();
     let clientDataMapperRedis = new ClientDataMapperRedis(redisClient);
@@ -15,7 +16,7 @@ describe("@functional @redis ClientDataMapperRedis", () => {
             id: "test:id123",
             secret: "secret123",
             name: "name123" + Math.random(),
-            websiteURL: "http://localhost",
+            websiteUrl: "http://localhost",
             redirectUri: "http://redirectUri",
             type: ClientTypeEnum.PUBLIC
         };

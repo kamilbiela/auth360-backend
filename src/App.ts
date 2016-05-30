@@ -8,10 +8,11 @@ import * as uuid from "node-uuid";
 
 import {ServiceContainer} from "./service/ServiceContainer";
 import {Config} from "./model/Config";
-import {ClientDataMapperRedis} from "./dataMapper/redis/ClientDataMapperRedis";
-import {UuidGenerator} from "./service/UuidGenerator";
+import {UuidGenerator} from "./service/uuidGenerator/UuidGenerator";
 import * as routes from "./route/index";
 import {BCryptPasswordHasher} from "./service/passwordHasher/BCryptPasswordHasher";
+import {ClientDataMapperRedis} from "./dataMapper/redis/ClientDataMapperRedis";
+import {UserDataMapperRedis} from "./dataMapper/redis/UserDataMapperRedis";
 
 export class App {
     private container: ServiceContainer = null;
@@ -32,20 +33,18 @@ export class App {
                 new (winston.transports.Console)()
             ]
         });
-
-        let clientDataMapper = new ClientDataMapperRedis(this.redisClient);
         
-        let uuidGenerator = new UuidGenerator(uuid);
+        let uuidGenerator = new UuidGenerator();
 
-        let passwordHasher = new BCryptPasswordHasher();
-        
-        this.container = new ServiceContainer(
-            config,
-            this.redisClient,
-            logger,
-            clientDataMapper,
-            uuidGenerator
-        );
+        this.container = new ServiceContainer({
+            config: config,
+            redisClient: this.redisClient,
+            logger: logger,
+            clientDataMapper: new ClientDataMapperRedis(this.redisClient, uuidGenerator),
+            userDataMapper: new UserDataMapperRedis(this.redisClient, uuidGenerator),
+            uuidGenerator: new UuidGenerator(),
+            passwordHasher: new BCryptPasswordHasher(),
+        });
     }
     
     private tearDown() {
@@ -83,7 +82,7 @@ export class App {
                     html: swig
                 },
                 path: "./src/template" // @todo put in config
-            })
+            });
             server.route(this.getConfiguredRoutes());
             
             server.start((err) => {

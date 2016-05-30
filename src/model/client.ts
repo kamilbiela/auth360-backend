@@ -6,15 +6,11 @@ export enum ClientTypeEnum {
 
 export type ClientId = string;
 
-export class Client {
+export interface Client {
     id: ClientId;
-    
-    constructor(
-        public name: string,
-        public websiteURL: string,
-        public redirectUri: string,
-        public secret: string,
-        public type: ClientTypeEnum = ClientTypeEnum.PUBLIC
-    ) {
-    }
+	name: string;
+	websiteUrl: string;
+	redirectUri: string;
+	secret: string;
+	type: ClientTypeEnum;
 }
