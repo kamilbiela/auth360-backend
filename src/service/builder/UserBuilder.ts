@@ -13,32 +13,34 @@ export class UserBuilder {
     }
 
     email: string;
-    password: string;
     salt: string;
-    
-    saltPromise: Promise.IThenable<string>;
+    passwordPromise: Promise.IThenable<string>;
     
     setEmail(email: string) {
         this.email = email;
     }
     
-    setPassword(password: string) {
-        this.passwordHasher.generateSalt().then((salt) => {
+    setPassword(password: string): Promise.IThenable<string> {
+        this.passwordPromise = this.passwordHasher.generateSalt().then((salt) => {
             this.salt = salt;
             return this.passwordHasher.generatePasswordHash(password, salt);
         });
+        
+        return this.passwordPromise;
     }
     
     getResult(): Promise.IThenable<User> {
-        if (_.isUndefined(this.saltPromise)) {
+        if (_.isUndefined(this.passwordPromise)) {
             throw new Error("You need to set password first");
         }
-        
-        return this.saltPromise.then(() => {
+       
+        return Promise.all([
+            this.passwordPromise,
+        ]).then(([password]) => {
             return {
-                id: this.uuidGenerator.generate(),
+                id: this.email,
                 email: this.email,
-                password: this.password,
+                password: password,
                 salt: this.salt
             }
         });

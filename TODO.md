@@ -1,6 +1,5 @@
 Short term:
-- ClientId / handling model ids - implementation that can work with sql and nosql
-- Code data mapper - add
+- auth enpoint is working - make high level tests for failing scenarios, fill them and refactor it to not be ugly as hell
 
 Future:
 - abstract data mapper tests, so one set of tests can be used to test different implementations.

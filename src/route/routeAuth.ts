@@ -10,26 +10,24 @@ import {CodeManager} from "../service/CodeManager";
 import {IPasswordHasher} from "../service/IPasswordHasher";
 import {ClientId, Client} from "../model/client";
 
-let authorizePath = "/authorize";
-let templateName = "login.html";
+const authorizePath = "/authorize";
+const templateName = "login.html";
 
 // @todo PROPER ERROR HANDLING, SEE 4.1.2
-let commonValidationQuery = {
-    query: {
-        response_type: Joi.string().equal("code").required(),
-        // @todo make client_id validator?
-        client_id: Joi.string().required(),
+const commonValidationQuery = {
+    response_type: Joi.string().equal("code").required(),
+    // @todo make client_id validator?
+    client_id: Joi.string().required(),
 
-        // @todo this value is optional (4.1.1)
-        redirect_uri: Joi.string().uri({
-            scheme: "https"
-        }).required(),
+    // @todo this value is optional (4.1.1)
+    redirect_uri: Joi.string().uri({
+        scheme: "https"
+    }).required(),
 
-        scope: Joi.string().optional(),
-        state: Joi.string().optional()
-    }
+    scope: Joi.string().optional(),
+    state: Joi.string().optional()
 };
-    
+
 // implementation of 4.1.1
 export let authGET = (): Hapi.IRouteConfiguration => {
     return {
@@ -41,7 +39,7 @@ export let authGET = (): Hapi.IRouteConfiguration => {
         config: {
             validate: {
                 query: commonValidationQuery
-            } 
+            }
         }
     }
 };
@@ -52,18 +50,14 @@ export let authPOST = (
     userDataMapper: IUserDataMapper,
     passwordHasher: IPasswordHasher
 ): Hapi.IRouteConfiguration => {
+    const usernameOrPassError = "usernameOrPassError";
+    const wrongRedirectUri = "wrongRedirectUri";
+    const wrongClientId = "wrongClientId";
+
     return {
         method: "POST",
         path: authorizePath,
         handler: (request, response) => {
-            if (!(request.payload.login && request.payload.password)) {
-                return response.view(templateName, {loginOrPasswordError: true});
-            }
-           
-            const usernameOrPassError = "usernameOrPassError";
-            const wrongRedirectUri = "wrongRedirectUri";
-            const wrongClientId = "wrongClientId";
-
             clientDataMapper.getById(request.query.client_id).then((client) => {
                 if (_.isEmpty(client)) {
                     console.log("adsda");
@@ -77,8 +71,8 @@ export let authPOST = (
 
                 return client;
             }).then((client) => {
-                return userDataMapper.getByUsername(request.payload.login).then((user) => {
-                    if (_.isEmpty(user) || user.id !== request.payload.login) {
+                return userDataMapper.getByUsername(request.payload.username).then((user) => {
+                    if (_.isEmpty(user) || user.id !== request.payload.username) {
                         console.log("throw2");
                         throw new Error(usernameOrPassError);
                     }
@@ -106,26 +100,31 @@ export let authPOST = (
                 return url.format(parsedUrl);
             }).then((redirectUri) => {
                 response.redirect(redirectUri);
-            }, (err: Error) => {
-                if (err.message === usernameOrPassError) {
+            }, (error: Error) => {
+                if (error.message === usernameOrPassError) {
                     response.view(templateName, {loginOrPasswordError: true});
-                } else if (err.message === wrongRedirectUri) {
+                } else if (error.message === wrongRedirectUri) {
                     response.view(templateName, {wrongRedirectUriError: true});
-                } else if (err.message === wrongClientId) {
+                } else if (error.message === wrongClientId) {
                     response.view(templateName, {wrongClientId: wrongClientId});
                 } else {
-                    console.log("----------------- ");
-                    console.error(err);
+                    response(error);
                 }
-                
             })
         },
         config: {
             validate: {
-                query: Object.assign({}, commonValidationQuery, {
+                query: commonValidationQuery,
+                payload: {
                     username: Joi.string().required(),
                     password: Joi.string().required()
-                })
+                },
+                failAction(request, response, source, error) {
+                    let validation = error.output.payload.validation;
+                    if (validation.keys.indexOf("username") || validation.keys.indexOf("password")) {
+                        return response.view(templateName, {loginOrPasswordError: true});
+                    }
+                }
             }
         }
     }  

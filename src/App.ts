@@ -64,7 +64,7 @@ export class App {
         ];
     }
 
-    startHttpServer(): Promise.IThenable<boolean> {
+    startHttpServer(): Promise.IThenable<any> {
         return new Promise<any>((resolve, reject) => {
             this.container.getLogger().debug(`Starting http server on port ${this.config.http.port}`);
             
@@ -119,6 +119,8 @@ export class App {
                 
                 clientBuilder.getResult().then((client) => {
                     return this.container.getClientDataMapper().insert(client).then(() => {
+                        console.log("Created client");
+                        console.log(client);
                         this.tearDown();
                     });
                 })
@@ -130,6 +132,30 @@ export class App {
                 console.log("delete client", argv);
                 this.tearDown();
             })
+
+            .command("user:create", "Create new user", (yargs: yargs.Argv) => {
+                return yargs
+                    .demand("username")
+                    .demand("password")
+                    ;
+            }, (argv: any) => {
+                let userBuilder = this.container.getUserBuilder()();
+                userBuilder.setEmail(argv.username);
+                userBuilder.setPassword(argv.password);
+
+                userBuilder.getResult().then((user) => {
+                    return this.container.getUserDataMapper().insert(user).then(() => {
+                        console.log("Created user");
+                        console.log(user);
+                        this.tearDown();
+                    });
+                })
+            })
+            
             .argv;
     }
 }
+
+// 1f19c7d3-8443-44f4-9037-f36f84dfa522
+// d9ee9670-3a97-4fac-9309-111dfd451806
+//

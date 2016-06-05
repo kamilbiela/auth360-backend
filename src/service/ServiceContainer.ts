@@ -30,19 +30,19 @@ export class ServiceContainer {
     }
 
     getClientBuilder(): () => ClientBuilder {
-        return function() { 
+        return () => { 
             return new ClientBuilder(this.getUuidGenerator())
         };
     }
 
     getCodeBuilder(): () => CodeBuilder {
-        return function() {
+        return () => {
             return new CodeBuilder(this.getUuidGenerator());
         }
     }
  
     getUserBuilder(): () => UserBuilder {
-        return function() {
+        return () => {
             return new UserBuilder(this.getUuidGenerator(), this.getPasswordHasher());
         }
     }

@@ -5,4 +5,5 @@ import {BaseDataMapperRedis} from "./BaseDataMapperRedis";
 
 
 export class CodeDataMapperRedis extends BaseDataMapperRedis<Code, CodeId> implements ICodeDataMapper {
+    protected objectName = "code";
 }
