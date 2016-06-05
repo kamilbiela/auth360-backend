@@ -1,3 +1,8 @@
+// @todo add env check flag
+require('promise/lib/rejection-tracking').enable(
+  {allRejections: true}
+);
+
 import {App} from "./src/App";
 import {configLoader} from "./src/configLoader";
 

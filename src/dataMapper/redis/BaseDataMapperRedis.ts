@@ -1,6 +1,6 @@
 import * as _ from "lodash";
 import {IRedisClient} from "../../service/IRedisClient";
-import {Promise} from "es6-promise";
+import * as Promise from "promise";
 
 interface ObjectAttributes {
     id: any
@@ -31,7 +31,7 @@ export class BaseDataMapperRedis<T extends ObjectAttributes, TId> {
         return JSON.stringify(data);
     }
 
-    insert(obj: T): Promise<TId> {
+    insert(obj: T): Promise.IThenable<TId> {
         return new Promise<TId>((resolve, reject) => {
             this.redisClient.setnx(this.getKeyForId(obj.id), this.stringify(obj), (err) => {
                 if (err) {
@@ -43,7 +43,7 @@ export class BaseDataMapperRedis<T extends ObjectAttributes, TId> {
         });
     }
 
-    update(id: TId, fieldsToUpdate: Object): Promise<void> {
+    update(id: TId, fieldsToUpdate: Object): Promise.IThenable<void> {
         return this.getById(id).then((objFromDb) => {
             return new Promise<void>((resolve, reject) => {
                 let newObj = _.merge(objFromDb, fieldsToUpdate);
@@ -52,13 +52,13 @@ export class BaseDataMapperRedis<T extends ObjectAttributes, TId> {
                         return reject(err);
                     }
 
-                    return resolve();
+                    return resolve(null);
                 });
             });
         });
     }
 
-    hasId(id: TId): Promise<boolean> {
+    hasId(id: TId): Promise.IThenable<boolean> {
         return new Promise<boolean>((resolve, reject) => {
             this.redisClient.exists(this.getKeyForId(id), (err, result) => {
                 if (err) {
@@ -70,7 +70,7 @@ export class BaseDataMapperRedis<T extends ObjectAttributes, TId> {
         });
     }
 
-    getById(id: TId): Promise<T> {
+    getById(id: TId): Promise.IThenable<T> {
         return new Promise<T>((resolve, reject) => {
             this.redisClient.get(this.getKeyForId(id), (err, data) => {
                 if (err) {

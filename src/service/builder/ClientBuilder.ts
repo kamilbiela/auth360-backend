@@ -1,7 +1,7 @@
 import {Client, ClientTypeEnum} from "../../model/Client";
 import * as _ from "lodash";
 import {IUuidGenerator} from "../IUuidGenerator";
-import {Promise} from "es6-promise";
+import * as Promise from "promise";
 
 export class ClientBuilder {
     private name: string = null;
@@ -25,7 +25,7 @@ export class ClientBuilder {
         this.redirectURI = redirectURI;
     }
     
-    getResult(): Promise<Client> {
+    getResult(): Promise.IThenable<Client> {
         return new Promise((resolve) => {
             if (_.isEmpty(this.name)) {
                 throw new Error("Client name can't be empty");

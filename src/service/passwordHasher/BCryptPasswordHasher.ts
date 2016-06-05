@@ -1,12 +1,12 @@
 import {IPasswordHasher} from "../IPasswordHasher";
 import * as bcrypt from "bcrypt";
-import {Promise} from "es6-promise";
+import * as Promise from "promise";
 
 export class BCryptPasswordHasher implements IPasswordHasher {
     constructor() {
     }
     
-    generateSalt(): Promise<string> {
+    generateSalt(): Promise.IThenable<string> {
         return new Promise((resolve, reject) => {
             bcrypt.genSalt((err, salt) => {
                 if (err) {
@@ -18,7 +18,7 @@ export class BCryptPasswordHasher implements IPasswordHasher {
         });
     }
     
-    generatePasswordHash(password: string, salt: string): Promise<string> {
+    generatePasswordHash(password: string, salt: string): Promise.IThenable<string> {
         return new Promise((resolve, reject) => {
             bcrypt.hash(password, salt, (err, result) => {
                 if (err) {
@@ -30,7 +30,7 @@ export class BCryptPasswordHasher implements IPasswordHasher {
         });
     }
     
-    comparePassword(plaintextPassword: string, hashedPassword: string, salt?: string): Promise<boolean> {
+    comparePassword(plaintextPassword: string, hashedPassword: string, salt?: string): Promise.IThenable<boolean> {
         return new Promise((resolve, reject) => {
             bcrypt.compare(plaintextPassword, hashedPassword, (err, isMatch) => {
                 if (err) {

@@ -1,6 +1,6 @@
 import * as Hapi from "hapi";
 import * as redis from "redis";
-import {Promise} from "es6-promise";
+import * as Promise from "promise";
 import * as winston from "winston";
 import * as yargs from "yargs";
 import * as swig from "swig";
@@ -59,11 +59,12 @@ export class App {
             routes.indexGET(c.getLogger()),
             routes.clientGET(c.getClientDataMapper()),
             routes.clientPOST(c.getClientBuilder(), this.container.getClientDataMapper()),
-            routes.authGET()
+            routes.authGET(),
+            routes.authPOST(c.getClientDataMapper(), c.getCodeManager(), c.getUserDataMapper(), c.getPasswordHasher())
         ];
     }
 
-    startHttpServer(): Promise<boolean> {
+    startHttpServer(): Promise.IThenable<boolean> {
         return new Promise<any>((resolve, reject) => {
             this.container.getLogger().debug(`Starting http server on port ${this.config.http.port}`);
             
@@ -93,7 +94,7 @@ export class App {
                 }
 
                 this.container.getLogger().debug("Server started");
-                return resolve();
+                return resolve(null);
             })
         }).then<any>(null, (err) => {
             this.tearDown();

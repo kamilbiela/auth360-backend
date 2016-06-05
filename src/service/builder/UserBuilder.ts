@@ -1,6 +1,6 @@
 import {User, UserId} from "../../model/User";
 import {IPasswordHasher} from "../IPasswordHasher";
-import {Promise} from "es6-promise";
+import * as Promise from "promise";
 
 import * as _ from "lodash";
 import {IUuidGenerator} from "../IUuidGenerator";
@@ -16,7 +16,7 @@ export class UserBuilder {
     password: string;
     salt: string;
     
-    saltPromise: Promise<string>;
+    saltPromise: Promise.IThenable<string>;
     
     setEmail(email: string) {
         this.email = email;
@@ -29,7 +29,7 @@ export class UserBuilder {
         });
     }
     
-    getResult(): Promise<User> {
+    getResult(): Promise.IThenable<User> {
         if (_.isUndefined(this.saltPromise)) {
             throw new Error("You need to set password first");
         }

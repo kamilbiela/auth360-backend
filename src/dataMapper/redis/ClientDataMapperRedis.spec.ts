@@ -38,7 +38,7 @@ describe("@functional @redis ClientDataMapperRedis", () => {
                         assert.ifError(err);
                         let c: Client = JSON.parse(result);
                         assert.equal(c.name, client.name);
-                        resolve();
+                        resolve(null);
                     });
                 });
             })
@@ -54,7 +54,7 @@ describe("@functional @redis ClientDataMapperRedis", () => {
                             assert.ifError(err);
                             let c:Client = JSON.parse(result);
                             assert.equal(c.name, client.name);
-                            resolve();
+                            resolve(null);
                         });
                     });
                 })
@@ -74,7 +74,7 @@ describe("@functional @redis ClientDataMapperRedis", () => {
 
                         let c: Client = JSON.parse(result);
                         assert.equal(c.name, newName);
-                        resolve();
+                        resolve(null);
                     })
                 })
             })

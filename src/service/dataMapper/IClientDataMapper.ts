@@ -1,9 +1,9 @@
 import {Client, ClientId} from "../../model/Client";
-import {Promise} from "es6-promise";
+import * as Promise from "promise";
 
 export interface IClientDataMapper {
-    insert(client: Client): Promise<ClientId>;
-    update(id: ClientId, clientFieldsToUpdate: {[key: string]: any}): Promise<void>;
-    hasId(id: ClientId): Promise<boolean>;
-    getById(id: ClientId): Promise<Client>;
+    insert(client: Client): Promise.IThenable<ClientId>;
+    update(id: ClientId, clientFieldsToUpdate: {[key: string]: any}): Promise.IThenable<void>;
+    hasId(id: ClientId): Promise.IThenable<boolean>;
+    getById(id: ClientId): Promise.IThenable<Client>;
 }

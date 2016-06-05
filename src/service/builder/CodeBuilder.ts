@@ -2,7 +2,7 @@ import * as moment from "moment";
 import {ClientId} from "../../model/Client";
 import {Code} from "../../model/Code";
 import {IUuidGenerator} from "../IUuidGenerator";
-import {Promise} from "es6-promise";
+import * as Promise from "promise";
 
 export class CodeBuilder {
     clientId: ClientId;
@@ -26,7 +26,7 @@ export class CodeBuilder {
         this.value = value;
     }
     
-    getResult(): Promise<Code> {
+    getResult(): Promise.IThenable<Code> {
         return new Promise((resolve) => {
             return resolve({
                 id: this.uuidGenerator.generate(),

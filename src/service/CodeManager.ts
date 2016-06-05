@@ -1,4 +1,4 @@
-import {Promise} from "es6-promise";
+import * as Promise from "promise";
 import {Code} from "../model/Code";
 import {ClientId} from "../model/Client";
 import {ICodeDataMapper} from "./dataMapper/ICodeDataMapper";
@@ -12,7 +12,7 @@ export class CodeManager {
         
     }
    
-    private create(clientId: ClientId): Promise<Code> {
+    private create(clientId: ClientId): Promise.IThenable<Code> {
         return new Promise((resolve, reject) => {
             let cb = this.codeBuilder();
             cb.setClientId(clientId);
@@ -22,7 +22,7 @@ export class CodeManager {
         });
     }
     
-    createAndInsert(clientId: ClientId): Promise<any> {
+    createAndInsert(clientId: ClientId): Promise.IThenable<any> {
         return this.create(clientId).then((code) => {
             return this.codeDataMapper.insert(code);
         });

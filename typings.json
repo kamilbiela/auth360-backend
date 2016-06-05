@@ -1,6 +1,7 @@
 {
   "ambientDependencies": {
     "bcrypt": "registry:dt/bcrypt#0.0.0+20160316155526",
+    "bluebird": "registry:dt/bluebird#2.0.0+20160319051630",
     "chai": "registry:dt/chai#3.4.0+20160317120654",
     "es6-promise": "registry:dt/es6-promise#0.0.0+20160423074304",
     "hapi": "registry:dt/hapi#13.0.0+20160423060411",
@@ -12,7 +13,7 @@
     "moment": "registry:dt/moment#2.8.0+20160316155526",
     "node": "registry:dt/node#4.0.0+20160412142033",
     "node-uuid": "registry:dt/node-uuid#0.0.0+20160316155526",
-    "promise": "registry:dt/promise#7.1.1+20160316171810",
+    "promise": "registry:dt/promise#7.1.1+20160602154553",
     "redis": "registry:dt/redis#0.12.1+20160316155526",
     "swig": "registry:dt/swig#0.0.0+20160316155526",
     "winston": "registry:dt/winston#0.0.0+20160417152829",
