@@ -29,16 +29,17 @@ export class ServiceContainer {
     ) {
     }
 
+    // @see this.getCodeManager
+    private getCodeBuilder(): () => CodeBuilder {
+        return () => {
+            return new CodeBuilder(this.getUuidGenerator());
+        }
+    }
+    
     getClientBuilder(): () => ClientBuilder {
         return () => { 
             return new ClientBuilder(this.getUuidGenerator())
         };
-    }
-
-    getCodeBuilder(): () => CodeBuilder {
-        return () => {
-            return new CodeBuilder(this.getUuidGenerator());
-        }
     }
  
     getUserBuilder(): () => UserBuilder {

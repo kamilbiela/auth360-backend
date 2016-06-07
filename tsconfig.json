@@ -16,8 +16,7 @@
         "suppressImplicitAnyIndexErrors": true
     },
     "exclude": [
-        "node_modules",
-        "typings/browser"
+        "node_modules"
     ],
     "compileOnSave": false,
     "buildOnSave": false,

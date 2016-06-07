@@ -1,5 +1,8 @@
 var assert = require("chai").assert;
-xdescribe("Authorization code flow (3-legged OAuth)", () => {
+
+import {startApp} from "./app.spec";
+
+describe("@acceptance Authorization code flow (3-legged OAuth)", () => {
     describe("First time authorization code flow", () => {
         let code: string = "";
 
@@ -9,7 +12,7 @@ xdescribe("Authorization code flow (3-legged OAuth)", () => {
                 scope: "uscope1,uscope2",
                 state: "some-random-state",
                 redirect_uri: "https://redirect.to.localhost"
-            }
+            };
 
             // do the request
 

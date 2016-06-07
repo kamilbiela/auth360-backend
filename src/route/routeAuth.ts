@@ -4,11 +4,9 @@ import * as url from "url";
 import * as _ from "lodash";
 
 import {IClientDataMapper} from "../service/dataMapper/IClientDataMapper";
-import {ICodeDataMapper} from "../service/dataMapper/ICodeDataMapper";
 import {IUserDataMapper} from "../service/dataMapper/IUserDataMapper";
 import {CodeManager} from "../service/CodeManager";
 import {IPasswordHasher} from "../service/IPasswordHasher";
-import {ClientId, Client} from "../model/client";
 
 const authorizePath = "/authorize";
 const templateName = "login.html";

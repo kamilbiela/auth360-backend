@@ -16,11 +16,12 @@ import {UserDataMapperRedis} from "./dataMapper/redis/UserDataMapperRedis";
 import {CodeDataMapperRedis} from "./dataMapper/redis/CodeDataMapperRedis";
 
 export class App {
-    private container: ServiceContainer = null;
-    private redisClient: redis.RedisClient = null;
+    protected container: ServiceContainer = null;
+    protected redisClient: redis.RedisClient = null;
+    protected server: Hapi.Server = null;
     
     constructor(
-        private config: Config
+        protected config: Config
     ) {
         this.initContainer(config);
     }
@@ -35,8 +36,6 @@ export class App {
             ]
         });
         
-        let uuidGenerator = new UuidGenerator();
-
         this.container = new ServiceContainer({
             config: config,
             redisClient: this.redisClient,
@@ -49,7 +48,7 @@ export class App {
         });
     }
     
-    private tearDown() {
+    protected tearDownDbConnection() {
         this.redisClient.quit();
     }
     
@@ -68,39 +67,43 @@ export class App {
         return new Promise<any>((resolve, reject) => {
             this.container.getLogger().debug(`Starting http server on port ${this.config.http.port}`);
             
-            const server = new Hapi.Server(<any>{
+            this.server = new Hapi.Server(<any>{
                 debug:  {
                     request: ['error', 'debug', 'all']
                 }
             });
-            server.register(require('vision'), (err) => {
+            this.server.register(require('vision'), (err) => {
                 if (err) {
                     console.log("Failed to load vision.");
                 }
             });
             
-            server.connection({port: this.config.http.port});
-            server.views({
+            this.server.connection({port: this.config.http.port});
+            this.server.views({
                 engines: {
                     html: swig
                 },
                 path: "./src/template" // @todo put in config
             });
-            server.route(this.getConfiguredRoutes());
+            this.server.route(this.getConfiguredRoutes());
             
-            server.start((err) => {
+            this.server.start((err) => {
                 if (err) {
                     return reject(err);
                 }
 
                 this.container.getLogger().debug("Server started");
                 return resolve(null);
-            })
+            });
         }).then<any>(null, (err) => {
-            this.tearDown();
+            this.tearDownDbConnection();
             throw err;
         })
     };
+
+    stopHttpServer(): Promise.IThenable<any> {
+        return Promise.resolve(this.server.stop());
+    }
 
     startCli(): void {
         // @todo move to separate class
@@ -121,7 +124,7 @@ export class App {
                     return this.container.getClientDataMapper().insert(client).then(() => {
                         console.log("Created client");
                         console.log(client);
-                        this.tearDown();
+                        this.tearDownDbConnection();
                     });
                 })
             })
@@ -130,7 +133,7 @@ export class App {
                 return yargs.demand("id");
             }, (argv: any) => {
                 console.log("delete client", argv);
-                this.tearDown();
+                this.tearDownDbConnection();
             })
 
             .command("user:create", "Create new user", (yargs: yargs.Argv) => {
@@ -147,15 +150,12 @@ export class App {
                     return this.container.getUserDataMapper().insert(user).then(() => {
                         console.log("Created user");
                         console.log(user);
-                        this.tearDown();
+                        this.tearDownDbConnection();
                     });
                 })
             })
             
             .argv;
     }
+    
 }
-
-// 1f19c7d3-8443-44f4-9037-f36f84dfa522
-// d9ee9670-3a97-4fac-9309-111dfd451806
-//
