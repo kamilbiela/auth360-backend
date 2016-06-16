@@ -2,6 +2,8 @@ import * as Promise from "promise";
 import {App} from "../src/App";
 import {ServiceContainer} from "../src/service/ServiceContainer";
 import {configLoader} from "../src/configLoader";
+import {ClientId} from "../src/model/client";
+import {UserId} from "../src/model/User";
 
 export const data = {
     user: {
@@ -38,7 +40,7 @@ export class AppTest extends App {
         return this.flushdb();
     }
     
-    loadUser(): Promise.IThenable<any> {
+    loadUser(): Promise.IThenable<UserId> {
         let userBuilder = this.getContainer().getUserBuilder()();
         userBuilder.setEmail(data.user.username);
         userBuilder.setPassword(data.user.password);
@@ -46,6 +48,16 @@ export class AppTest extends App {
         return userBuilder.getResult()
             .then(user => this.container.getUserDataMapper().insert(user))
         ;
+    }
+    
+    loadClient(redirectUri: string): Promise.IThenable<ClientId> {
+        let clientBuilder = this.getContainer().getClientBuilder()();
+        clientBuilder.setName("client-name");
+        clientBuilder.setRedirectUri(redirectUri);
+        clientBuilder.setWebsiteURL("http://somewebsite.localhost");
+        
+        return clientBuilder.getResult()
+            .then(client => this.container.getClientDataMapper().insert(client));
     }
 }
 

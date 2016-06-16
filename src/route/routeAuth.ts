@@ -42,6 +42,9 @@ export let authGET = (): Hapi.IRouteConfiguration => {
     }
 };
 
+/* 
+@todo clean this after tests
+ */
 export let authPOST = (
     clientDataMapper: IClientDataMapper,
     codeManager: CodeManager,
