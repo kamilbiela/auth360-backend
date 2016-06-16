@@ -1,7 +1,7 @@
 var assert = require("chai").assert;
-import * as $ from "jquery";
 import * as Promise from "promise";
 import {appInstance} from "./app.spec";
+var rp = require("request-promise");
 
 describe("@acceptance Authorization code flow (3-legged OAuth)", () => {
     describe("First time authorization code flow", () => {
@@ -18,10 +18,9 @@ describe("@acceptance Authorization code flow (3-legged OAuth)", () => {
                     redirect_uri: redirectUri,
                     client_id: clientId
                 };
-console.log($);
-                return Promise.resolve($.get("http://localhost:4200/").then((data) => {
+                return rp("http://localhost:4123/").then((data) => {
                     console.log(data);
-                }));
+                });
             });
             
 
