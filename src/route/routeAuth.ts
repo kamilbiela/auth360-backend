@@ -7,8 +7,8 @@ import {IClientDataMapper} from "../service/dataMapper/IClientDataMapper";
 import {IUserDataMapper} from "../service/dataMapper/IUserDataMapper";
 import {CodeManager} from "../service/CodeManager";
 import {IPasswordHasher} from "../service/IPasswordHasher";
+import {Routes} from "../routes.const.ts";
 
-const authorizePath = "/authorize";
 const templateName = "login.html";
 
 // @todo PROPER ERROR HANDLING, SEE 4.1.2
@@ -30,7 +30,7 @@ const commonValidationQuery = {
 export let authGET = (): Hapi.IRouteConfiguration => {
     return {
         method: "GET",
-        path: authorizePath, 
+        path: Routes.AuthorizePath, 
         handler: (request, response) => {
             return response.view(templateName);
         },
@@ -57,7 +57,7 @@ export let authPOST = (
 
     return {
         method: "POST",
-        path: authorizePath,
+        path: Routes.AuthorizePath, 
         handler: (request, response) => {
             clientDataMapper.getById(request.query.client_id).then((client) => {
                 if (_.isEmpty(client)) {
