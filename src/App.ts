@@ -68,9 +68,10 @@ export class App {
             this.container.getLogger().debug(`Starting http server on port ${this.config.http.port}`);
             
             this.server = new Hapi.Server(<any>{
+                /*
                 debug:  {
                     request: ['error', 'debug', 'all']
-                }
+                }*/
             });
             this.server.register(require('vision'), (err) => {
                 if (err) {

@@ -23,7 +23,7 @@ const commonValidationQuery = {
     }).required(),
 
     scope: Joi.string().optional(),
-    state: Joi.string().optional()
+    state: Joi.string().optional(),
 };
 
 // implementation of 4.1.1
@@ -36,9 +36,14 @@ export let authGET = (): Hapi.IRouteConfiguration => {
         },
         config: {
             validate: {
-                query: commonValidationQuery
+                query: commonValidationQuery,
+                failAction(request, response, source, error) {
+                    if (_.some(error.data.details, ["path", "response_type"])) {
+                        return response.redirect("http://dupa");
+                    }
+                },
             }
-        }
+        },
     }
 };
 

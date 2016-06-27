@@ -65,10 +65,8 @@ export function unparse(buffer?: number[], offset?: number): string;
 export function unparse(buffer?: Buffer, offset?: number): string;
 }
 declare module 'node-uuid/main' {
-import alias = require('~node-uuid/main');
-export = alias;
+export * from '~node-uuid/main';
 }
 declare module 'node-uuid' {
-import alias = require('~node-uuid/main');
-export = alias;
+export * from '~node-uuid/main';
 }

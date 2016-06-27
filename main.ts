@@ -1,4 +1,5 @@
 // @todo add env check flag
+
 require('promise/lib/rejection-tracking').enable(
   {allRejections: true}
 );

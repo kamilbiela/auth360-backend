@@ -20,6 +20,7 @@
     "portfinder": "^1.0.3",
     "promise": "^7.1.1",
     "redis": "^2.6.0-2",
+    "request-promise": "^3.0.0",
     "swig": "^1.4.2",
     "ts-node": "^0.8.0",
     "typescript": "^1.8.10",
