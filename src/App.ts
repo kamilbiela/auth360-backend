@@ -58,7 +58,7 @@ export class App {
             routes.indexGET(c.getLogger()),
             routes.clientGET(c.getClientDataMapper()),
             routes.clientPOST(c.getClientBuilder(), this.container.getClientDataMapper()),
-            routes.authGET(),
+            routes.authGET(c.getClientDataMapper()),
             routes.authPOST(c.getClientDataMapper(), c.getCodeManager(), c.getUserDataMapper(), c.getPasswordHasher())
         ];
     }
@@ -68,10 +68,9 @@ export class App {
             this.container.getLogger().debug(`Starting http server on port ${this.config.http.port}`);
             
             this.server = new Hapi.Server(<any>{
-                /*
                 debug:  {
                     request: ['error', 'debug', 'all']
-                }*/
+                }
             });
             this.server.register(require('vision'), (err) => {
                 if (err) {

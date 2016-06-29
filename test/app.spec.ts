@@ -5,7 +5,7 @@ import {configLoader} from "../src/configLoader";
 import {ClientId} from "../src/model/client";
 import {UserId} from "../src/model/User";
 
-export const data = {
+export const fixtureData = {
     user: {
         username: "test@test.localhost",
         password: "pass123"
@@ -40,10 +40,10 @@ export class AppTest extends App {
         return this.flushdb();
     }
     
-    loadUser(): Promise.IThenable<UserId> {
+    loadUser(username: string = "", password: string = ""): Promise.IThenable<UserId> {
         let userBuilder = this.getContainer().getUserBuilder()();
-        userBuilder.setEmail(data.user.username);
-        userBuilder.setPassword(data.user.password);
+        userBuilder.setEmail(username || fixtureData.user.username);
+        userBuilder.setPassword(password || fixtureData.user.password);
 
         return userBuilder.getResult()
             .then(user => this.container.getUserDataMapper().insert(user))
@@ -66,7 +66,7 @@ export let startApp = (): AppTest => {
     return new AppTest(config);
 };
 
-export let appInstance = startApp();
 before(() => appInstance.beforeAll());
 beforeEach(() => appInstance.beforeEach());
 after(() => appInstance.afterAll());
+export let appInstance = startApp();

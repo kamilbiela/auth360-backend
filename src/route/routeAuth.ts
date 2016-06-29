@@ -8,41 +8,68 @@ import {IUserDataMapper} from "../service/dataMapper/IUserDataMapper";
 import {CodeManager} from "../service/CodeManager";
 import {IPasswordHasher} from "../service/IPasswordHasher";
 import {Routes} from "../routes.const.ts";
+import {Client} from "../model/Client";
 
-const templateName = "login.html";
+const TEMPLATE_NAME = "login.html";
+const CLIENT = "client";
+const REDIRECT_URI = "redirect_uri";
 
-// @todo PROPER ERROR HANDLING, SEE 4.1.2
-const commonValidationQuery = {
-    response_type: Joi.string().equal("code").required(),
-    // @todo make client_id validator?
-    client_id: Joi.string().required(),
+const preClientId = (clientDataMapper: IClientDataMapper) => (request: Hapi.Request, reply: any) => {
+    let clientId = request.query.client_id;
+    if (_.isEmpty(clientId)) {
+        let response = reply(JSON.stringify({
+            error: "invalid_request",
+            error_description: "client_id is empty"
+        })).takeover();
+        response.statusCode = 400;
+        return response;
+    }
 
-    // @todo this value is optional (4.1.1)
-    redirect_uri: Joi.string().uri({
-        scheme: "https"
-    }).required(),
+    clientDataMapper.getById(clientId).then((client) => {
+        if (_.isEmpty(client)) {
+            let response = reply(JSON.stringify({
+                error: "invalid_request",
+                error_description: `no client with given client_id (${clientId})`
+            })).takeover();
+            response.statusCode = 400;
+            return response;
+        }
 
-    scope: Joi.string().optional(),
-    state: Joi.string().optional(),
+        return reply(client);
+    });
 };
 
-// implementation of 4.1.1
-export let authGET = (): Hapi.IRouteConfiguration => {
+const preRedirectUri = () =>
+    (request: Hapi.Request, reply: any): any => {
+        let client: Client = request.pre[CLIENT];
+        let redirectUri = request.query.redirect_uri;
+        if (!_.isEmpty(redirectUri) && redirectUri !== client.redirectUri) {
+            let response = reply(JSON.stringify({
+                error: "invalid_request",
+                error_description: "redirect_uri mismatch"
+            })).takeover();
+            response.statusCode = 400;
+            return response;
+        }
+        
+        return reply(true);
+    };
+
+    
+export let authGET = (
+    clientDataMapper: IClientDataMapper
+): Hapi.IRouteConfiguration => {
     return {
         method: "GET",
         path: Routes.AuthorizePath, 
         handler: (request, response) => {
-            return response.view(templateName);
+            return response.view(TEMPLATE_NAME);
         },
         config: {
-            validate: {
-                query: commonValidationQuery,
-                failAction(request, response, source, error) {
-                    if (_.some(error.data.details, ["path", "response_type"])) {
-                        return response.redirect("http://dupa");
-                    }
-                },
-            }
+            pre: [
+                {method: preClientId(clientDataMapper), assign: CLIENT},
+                {method: preRedirectUri(), assign: REDIRECT_URI}
+            ]
         },
     }
 };
@@ -64,38 +91,23 @@ export let authPOST = (
         method: "POST",
         path: Routes.AuthorizePath, 
         handler: (request, response) => {
-            clientDataMapper.getById(request.query.client_id).then((client) => {
-                if (_.isEmpty(client)) {
-                    console.log("adsda");
-                    throw new Error(wrongClientId);
-                }
-                
-                if (request.query.redirect_uri !== client.redirectUri) {
-                    console.log("throw 1");
-                    throw new Error(wrongRedirectUri);
+            let client: Client = request.pre[CLIENT];
+            
+            return userDataMapper.getByUsername(request.payload.username).then((user) => {
+                if (_.isEmpty(user) || user.id !== request.payload.username) {
+                    throw new Error(usernameOrPassError);
                 }
 
-                return client;
-            }).then((client) => {
-                return userDataMapper.getByUsername(request.payload.username).then((user) => {
-                    if (_.isEmpty(user) || user.id !== request.payload.username) {
-                        console.log("throw2");
+                return passwordHasher.comparePassword(request.payload.password, user.password, user.salt).then((isOk) => {
+                    if (!isOk) {
                         throw new Error(usernameOrPassError);
                     }
-
-                    return passwordHasher.comparePassword(request.payload.password, user.password, user.salt).then((isOk) => {
-                        if (!isOk) {
-                            throw new Error(usernameOrPassError);
-                        }
-
-                        return client;
-                    });
                 });
-            }).then((client) => {
+            }).then(() => {
                 return codeManager.createAndInsert(client.id).then(code => {
-                    return [client, code];
+                    return code;
                 })
-            }).then(([client, code]) => {
+            }).then((code) => {
                 let parsedUrl = url.parse(client.redirectUri, true);
                 parsedUrl.query.code = code;
 
@@ -108,30 +120,21 @@ export let authPOST = (
                 response.redirect(redirectUri);
             }, (error: Error) => {
                 if (error.message === usernameOrPassError) {
-                    response.view(templateName, {loginOrPasswordError: true});
+                    response.view(TEMPLATE_NAME, {loginOrPasswordError: true});
                 } else if (error.message === wrongRedirectUri) {
-                    response.view(templateName, {wrongRedirectUriError: true});
+                    response.view(TEMPLATE_NAME, {wrongRedirectUriError: true});
                 } else if (error.message === wrongClientId) {
-                    response.view(templateName, {wrongClientId: wrongClientId});
+                    response.view(TEMPLATE_NAME, {wrongClientId: wrongClientId});
                 } else {
                     response(error);
                 }
             })
         },
         config: {
-            validate: {
-                query: commonValidationQuery,
-                payload: {
-                    username: Joi.string().required(),
-                    password: Joi.string().required()
-                },
-                failAction(request, response, source, error) {
-                    let validation = error.output.payload.validation;
-                    if (validation.keys.indexOf("username") || validation.keys.indexOf("password")) {
-                        return response.view(templateName, {loginOrPasswordError: true});
-                    }
-                }
-            }
+            pre: [
+                {method: preClientId(clientDataMapper), assign: CLIENT},
+                {method: preRedirectUri(), assign: REDIRECT_URI}
+            ]
         }
     }  
 };
