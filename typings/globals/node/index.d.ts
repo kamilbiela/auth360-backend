@@ -75,7 +75,7 @@ type BufferEncoding = "ascii" | "utf8" | "utf16le" | "ucs2" | "binary" | "hex";
 interface Buffer extends NodeBuffer {}
 
 /**
- * Raw data is stored in instances of the Buffer class.
+ * Raw fixtureData is stored in instances of the Buffer class.
  * A Buffer is similar to an array of integers but corresponds to a raw memory allocation outside the V8 heap.  A Buffer cannot be resized.
  * Valid string encodings: 'ascii'|'utf8'|'utf16le'|'ucs2'(alias of 'utf16le')|'base64'|'binary'(deprecated)|'hex'
  */
@@ -114,7 +114,7 @@ declare var Buffer: {
      */
     new (array: any[]): Buffer;
     /**
-     * Copies the passed {buffer} data onto a new {Buffer} instance.
+     * Copies the passed {buffer} fixtureData onto a new {Buffer} instance.
      *
      * @param buffer The buffer to copy.
      */
@@ -138,7 +138,7 @@ declare var Buffer: {
      */
     from(arrayBuffer: ArrayBuffer, byteOffset?: number, length?:number): Buffer;
     /**
-     * Copies the passed {buffer} data onto a new Buffer instance.
+     * Copies the passed {buffer} fixtureData onto a new Buffer instance.
      *
      * @param buffer
      */
@@ -199,14 +199,14 @@ declare var Buffer: {
     alloc(size: number, fill?: string|Buffer|number, encoding?: string): Buffer;
      /**
       * Allocates a new buffer of {size} octets, leaving memory not initialized, so the contents
-      * of the newly created Buffer are unknown and may contain sensitive data.
+      * of the newly created Buffer are unknown and may contain sensitive fixtureData.
       *
       * @param size count of octets to allocate
       */
     allocUnsafe(size: number): Buffer;
      /**
       * Allocates a new non-pooled buffer of {size} octets, leaving memory not initialized, so the contents
-      * of the newly created Buffer are unknown and may contain sensitive data.
+      * of the newly created Buffer are unknown and may contain sensitive fixtureData.
       *
       * @param size count of octets to allocate
       */
@@ -1552,7 +1552,7 @@ declare module "fs" {
      *
      * @param fileName
      * @param encoding
-     * @param callback - The callback is passed two arguments (err, data), where data is the contents of the file.
+     * @param callback - The callback is passed two arguments (err, fixtureData), where fixtureData is the contents of the file.
      */
     export function readFile(filename: string, encoding: string, callback: (err: NodeJS.ErrnoException, data: string) => void): void;
     /*
@@ -1560,7 +1560,7 @@ declare module "fs" {
      *
      * @param fileName
      * @param options An object with optional {encoding} and {flag} properties.  If {encoding} is specified, readFile returns a string; otherwise it returns a Buffer.
-     * @param callback - The callback is passed two arguments (err, data), where data is the contents of the file.
+     * @param callback - The callback is passed two arguments (err, fixtureData), where fixtureData is the contents of the file.
      */
     export function readFile(filename: string, options: { encoding: string; flag?: string; }, callback: (err: NodeJS.ErrnoException, data: string) => void): void;
     /*
@@ -1568,14 +1568,14 @@ declare module "fs" {
      *
      * @param fileName
      * @param options An object with optional {encoding} and {flag} properties.  If {encoding} is specified, readFile returns a string; otherwise it returns a Buffer.
-     * @param callback - The callback is passed two arguments (err, data), where data is the contents of the file.
+     * @param callback - The callback is passed two arguments (err, fixtureData), where fixtureData is the contents of the file.
      */
     export function readFile(filename: string, options: { flag?: string; }, callback: (err: NodeJS.ErrnoException, data: Buffer) => void): void;
     /*
      * Asynchronous readFile - Asynchronously reads the entire contents of a file.
      *
      * @param fileName
-     * @param callback - The callback is passed two arguments (err, data), where data is the contents of the file.
+     * @param callback - The callback is passed two arguments (err, fixtureData), where fixtureData is the contents of the file.
      */
     export function readFile(filename: string, callback: (err: NodeJS.ErrnoException, data: Buffer) => void): void;
     /*

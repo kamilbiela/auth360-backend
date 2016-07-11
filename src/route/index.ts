@@ -1,3 +1,2 @@
-export {route as indexGET} from "./indexRoute";
-export * from "./routeClient";
-export * from "./routeAuth";
+export * from "./admin/routeClient";
+export * from "./public/routeAuthCodeGrant";

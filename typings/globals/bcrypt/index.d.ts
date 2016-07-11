@@ -2,12 +2,12 @@
 // Source: https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/56295f5058cac7ae458540423c50ac2dcf9fc711/bcrypt/bcrypt.d.ts
 declare module "bcrypt" {
   /**
-   * @param rounds  The cost of processing the data. Default 10.
+   * @param rounds  The cost of processing the fixtureData. Default 10.
    */
   export function genSaltSync(rounds?: number): string;
 
   /**
-   * @param rounds    The cost of processing the data. Default 10.
+   * @param rounds    The cost of processing the fixtureData. Default 10.
    * @param callback  A callback to be fire once the sald has been generated. Uses eio making it asynchronous.
    */
   export function genSalt(rounds: number, callback: (err: Error, salt: string) => void): void;
@@ -17,39 +17,39 @@ declare module "bcrypt" {
   export function genSalt(callback: (err: Error, salt: string) => void): void;
 
   /**
-   * @param data  The data to be encrypted.
+   * @param data  The fixtureData to be encrypted.
    * @param salt  The salt to be used in encryption.
    */
   export function hashSync(data: any, salt: string): string;
   /**
-   * @param data    The data to be encrypted.
+   * @param data    The fixtureData to be encrypted.
    * @param rounds  A salt will be generated using the rounds specified.
    */
   export function hashSync(data: any, rounds: number): string;
 
   /**
-   * @param data      The data to be encrypted.
+   * @param data      The fixtureData to be encrypted.
    * @param salt      The salt to be used in encryption.
-   * @param callback  A callback to be fired once the data has been encrypted. Uses eio making it asynchronous.
+   * @param callback  A callback to be fired once the fixtureData has been encrypted. Uses eio making it asynchronous.
    */
   export function hash(data: any, salt: string, callback: (err: Error, encrypted: string) => void): void;
   /**
-   * @param data      The data to be encrypted.
+   * @param data      The fixtureData to be encrypted.
    * @param rounds    A salt will be generated using the rounds specified.
-   * @param callback  A callback to be fired once the data has been encrypted. Uses eio making it asynchronous.
+   * @param callback  A callback to be fired once the fixtureData has been encrypted. Uses eio making it asynchronous.
    */
   export function hash(data: any, rounds: number, callback: (err: Error, encrypted: string) => void): void;
 
   /**
-   * @param data      The data to be encrypted.
-   * @param encrypted The data to be compared against.
+   * @param data      The fixtureData to be encrypted.
+   * @param encrypted The fixtureData to be compared against.
    */
   export function compareSync(data: any, encrypted: string): boolean;
 
   /**
-   * @param data      The data to be encrypted.
-   * @param encrypted The data to be compared against.
-   * @param callback  A callback to be fire once the data has been compared. Uses eio making it asynchronous.
+   * @param data      The fixtureData to be encrypted.
+   * @param encrypted The fixtureData to be compared against.
+   * @param callback  A callback to be fire once the fixtureData has been compared. Uses eio making it asynchronous.
    */
   export function compare(data: any, encrypted: string, callback: (err: Error, same: boolean) => void): void;
 

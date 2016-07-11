@@ -48,7 +48,7 @@ interface JQueryAjaxSettings {
      */
     data?: any;
     /**
-     * A function to be used to handle the raw response data of XMLHttpRequest.This is a pre-filtering function to sanitize the response. You should return the sanitized data. The function accepts two arguments: The raw data returned from the server and the 'dataType' parameter.
+     * A function to be used to handle the raw response fixtureData of XMLHttpRequest.This is a pre-filtering function to sanitize the response. You should return the sanitized fixtureData. The function accepts two arguments: The raw fixtureData returned from the server and the 'dataType' parameter.
      */
     dataFilter? (data: any, ty: any): any;
     /**
@@ -108,7 +108,7 @@ interface JQueryAjaxSettings {
      */
     statusCode?: { [key: string]: any; };
     /**
-     * A function to be called if the request succeeds. The function gets passed three arguments: The data returned from the server, formatted according to the dataType parameter; a string describing the status; and the jqXHR (in jQuery 1.4.x, XMLHttpRequest) object. As of jQuery 1.5, the success setting can accept an array of functions. Each function will be called in turn. This is an Ajax Event.
+     * A function to be called if the request succeeds. The function gets passed three arguments: The fixtureData returned from the server, formatted according to the dataType parameter; a string describing the status; and the jqXHR (in jQuery 1.4.x, XMLHttpRequest) object. As of jQuery 1.5, the success setting can accept an array of functions. Each function will be called in turn. This is an Ajax Event.
      */
     success? (data: any, textStatus: string, jqXHR: JQueryXHR): any;
     /**
@@ -638,37 +638,37 @@ interface JQueryStatic {
     ajaxSetup(options: JQueryAjaxSettings): void;
 
     /**
-     * Load data from the server using a HTTP GET request.
+     * Load fixtureData from the server using a HTTP GET request.
      *
      * @param url A string containing the URL to which the request is sent.
      * @param success A callback function that is executed if the request succeeds.
-     * @param dataType The type of data expected from the server. Default: Intelligent Guess (xml, json, script, or html).
+     * @param dataType The type of fixtureData expected from the server. Default: Intelligent Guess (xml, json, script, or html).
      */
     get(url: string, success?: (data: any, textStatus: string, jqXHR: JQueryXHR) => any, dataType?: string): JQueryXHR;
     /**
-     * Load data from the server using a HTTP GET request.
+     * Load fixtureData from the server using a HTTP GET request.
      *
      * @param url A string containing the URL to which the request is sent.
      * @param data A plain object or string that is sent to the server with the request.
      * @param success A callback function that is executed if the request succeeds.
-     * @param dataType The type of data expected from the server. Default: Intelligent Guess (xml, json, script, or html).
+     * @param dataType The type of fixtureData expected from the server. Default: Intelligent Guess (xml, json, script, or html).
      */
     get(url: string, data?: Object|string, success?: (data: any, textStatus: string, jqXHR: JQueryXHR) => any, dataType?: string): JQueryXHR;
     /**
-     * Load data from the server using a HTTP GET request.
+     * Load fixtureData from the server using a HTTP GET request.
      *
      * @param settings The JQueryAjaxSettings to be used for the request
      */
     get(settings : JQueryAjaxSettings): JQueryXHR;
     /**
-     * Load JSON-encoded data from the server using a GET HTTP request.
+     * Load JSON-encoded fixtureData from the server using a GET HTTP request.
      *
      * @param url A string containing the URL to which the request is sent.
      * @param success A callback function that is executed if the request succeeds.
      */
     getJSON(url: string, success?: (data: any, textStatus: string, jqXHR: JQueryXHR) => any): JQueryXHR;
     /**
-     * Load JSON-encoded data from the server using a GET HTTP request.
+     * Load JSON-encoded fixtureData from the server using a GET HTTP request.
      *
      * @param url A string containing the URL to which the request is sent.
      * @param data A plain object or string that is sent to the server with the request.
@@ -689,24 +689,24 @@ interface JQueryStatic {
     param: JQueryParam;
 
     /**
-     * Load data from the server using a HTTP POST request.
+     * Load fixtureData from the server using a HTTP POST request.
      *
      * @param url A string containing the URL to which the request is sent.
      * @param success A callback function that is executed if the request succeeds. Required if dataType is provided, but can be null in that case.
-     * @param dataType The type of data expected from the server. Default: Intelligent Guess (xml, json, script, text, html).
+     * @param dataType The type of fixtureData expected from the server. Default: Intelligent Guess (xml, json, script, text, html).
      */
     post(url: string, success?: (data: any, textStatus: string, jqXHR: JQueryXHR) => any, dataType?: string): JQueryXHR;
     /**
-     * Load data from the server using a HTTP POST request.
+     * Load fixtureData from the server using a HTTP POST request.
      *
      * @param url A string containing the URL to which the request is sent.
      * @param data A plain object or string that is sent to the server with the request.
      * @param success A callback function that is executed if the request succeeds. Required if dataType is provided, but can be null in that case.
-     * @param dataType The type of data expected from the server. Default: Intelligent Guess (xml, json, script, text, html).
+     * @param dataType The type of fixtureData expected from the server. Default: Intelligent Guess (xml, json, script, text, html).
      */
     post(url: string, data?: Object|string, success?: (data: any, textStatus: string, jqXHR: JQueryXHR) => any, dataType?: string): JQueryXHR;
     /**
-     * Load data from the server using a HTTP POST request.
+     * Load fixtureData from the server using a HTTP POST request.
      *
      * @param settings The JQueryAjaxSettings to be used for the request
      */
@@ -810,24 +810,24 @@ interface JQueryStatic {
     cssNumber: any;
 
     /**
-     * Store arbitrary data associated with the specified element. Returns the value that was set.
+     * Store arbitrary fixtureData associated with the specified element. Returns the value that was set.
      *
-     * @param element The DOM element to associate with the data.
-     * @param key A string naming the piece of data to set.
-     * @param value The new data value.
+     * @param element The DOM element to associate with the fixtureData.
+     * @param key A string naming the piece of fixtureData to set.
+     * @param value The new fixtureData value.
      */
     data<T>(element: Element, key: string, value: T): T;
     /**
-     * Returns value at named data store for the element, as set by jQuery.data(element, name, value), or the full data store for the element.
+     * Returns value at named fixtureData store for the element, as set by jQuery.fixtureData(element, name, value), or the full fixtureData store for the element.
      *
-     * @param element The DOM element to associate with the data.
-     * @param key A string naming the piece of data to set.
+     * @param element The DOM element to associate with the fixtureData.
+     * @param key A string naming the piece of fixtureData to set.
      */
     data(element: Element, key: string): any;
     /**
-     * Returns value at named data store for the element, as set by jQuery.data(element, name, value), or the full data store for the element.
+     * Returns value at named fixtureData store for the element, as set by jQuery.fixtureData(element, name, value), or the full fixtureData store for the element.
      *
-     * @param element The DOM element to associate with the data.
+     * @param element The DOM element to associate with the fixtureData.
      */
     data(element: Element): any;
 
@@ -840,9 +840,9 @@ interface JQueryStatic {
     dequeue(element: Element, queueName?: string): void;
 
     /**
-     * Determine whether an element has any jQuery data associated with it.
+     * Determine whether an element has any jQuery fixtureData associated with it.
      *
-     * @param element A DOM element to be checked for data.
+     * @param element A DOM element to be checked for fixtureData.
      */
     hasData(element: Element): boolean;
 
@@ -871,10 +871,10 @@ interface JQueryStatic {
     queue(element: Element, queueName: string, callback: Function): JQuery;
 
     /**
-     * Remove a previously-stored piece of data.
+     * Remove a previously-stored piece of fixtureData.
      *
-     * @param element A DOM element from which to remove data.
-     * @param name A string naming the piece of data to remove.
+     * @param element A DOM element from which to remove fixtureData.
+     * @param name A string naming the piece of fixtureData to remove.
      */
     removeData(element: Element, name?: string): JQuery;
 
@@ -1192,7 +1192,7 @@ interface JQuery {
     ajaxSuccess(handler: (event: JQueryEventObject, XMLHttpRequest: XMLHttpRequest, ajaxOptions: JQueryAjaxSettings) => any): JQuery;
 
     /**
-     * Load data from the server and place the returned HTML into the matched element.
+     * Load fixtureData from the server and place the returned HTML into the matched element.
      *
      * @param url A string containing the URL to which the request is sent.
      * @param data A plain object or string that is sent to the server with the request.
@@ -1541,26 +1541,26 @@ interface JQuery {
     clearQueue(queueName?: string): JQuery;
 
     /**
-     * Store arbitrary data associated with the matched elements.
+     * Store arbitrary fixtureData associated with the matched elements.
      *
-     * @param key A string naming the piece of data to set.
-     * @param value The new data value; it can be any Javascript type including Array or Object.
+     * @param key A string naming the piece of fixtureData to set.
+     * @param value The new fixtureData value; it can be any Javascript type including Array or Object.
      */
     data(key: string, value: any): JQuery;
     /**
-     * Return the value at the named data store for the first element in the jQuery collection, as set by data(name, value) or by an HTML5 data-* attribute.
+     * Return the value at the named fixtureData store for the first element in the jQuery collection, as set by fixtureData(name, value) or by an HTML5 fixtureData-* attribute.
      *
-     * @param key Name of the data stored.
+     * @param key Name of the fixtureData stored.
      */
     data(key: string): any;
     /**
-     * Store arbitrary data associated with the matched elements.
+     * Store arbitrary fixtureData associated with the matched elements.
      *
-     * @param obj An object of key-value pairs of data to update.
+     * @param obj An object of key-value pairs of fixtureData to update.
      */
     data(obj: { [key: string]: any; }): JQuery;
     /**
-     * Return the value at the named data store for the first element in the jQuery collection, as set by data(name, value) or by an HTML5 data-* attribute.
+     * Return the value at the named fixtureData store for the first element in the jQuery collection, as set by fixtureData(name, value) or by an HTML5 fixtureData-* attribute.
      */
     data(): any;
 
@@ -1572,19 +1572,19 @@ interface JQuery {
     dequeue(queueName?: string): JQuery;
 
     /**
-     * Remove a previously-stored piece of data.
+     * Remove a previously-stored piece of fixtureData.
      *
-     * @param name A string naming the piece of data to delete or space-separated string naming the pieces of data to delete.
+     * @param name A string naming the piece of fixtureData to delete or space-separated string naming the pieces of fixtureData to delete.
      */
     removeData(name: string): JQuery;
     /**
-     * Remove a previously-stored piece of data.
+     * Remove a previously-stored piece of fixtureData.
      *
-     * @param list An array of strings naming the pieces of data to delete.
+     * @param list An array of strings naming the pieces of fixtureData to delete.
      */
     removeData(list: string[]): JQuery;
     /**
-     * Remove all previously-stored piece of data.
+     * Remove all previously-stored piece of fixtureData.
      */
     removeData(): JQuery;
 
@@ -1878,7 +1878,7 @@ interface JQuery {
      * Attach a handler to an event for the elements.
      * 
      * @param eventType A string containing one or more DOM event types, such as "click" or "submit," or custom event names.
-     * @param eventData An object containing data that will be passed to the event handler.
+     * @param eventData An object containing fixtureData that will be passed to the event handler.
      * @param handler A function to execute each time the event is triggered.
      */
     bind(eventType: string, eventData: any, handler: (eventObject: JQueryEventObject) => any): JQuery;
@@ -1893,7 +1893,7 @@ interface JQuery {
      * Attach a handler to an event for the elements.
      * 
      * @param eventType A string containing one or more DOM event types, such as "click" or "submit," or custom event names.
-     * @param eventData An object containing data that will be passed to the event handler.
+     * @param eventData An object containing fixtureData that will be passed to the event handler.
      * @param preventBubble Setting the third argument to false will attach a function that prevents the default action from occurring and stops the event from bubbling. The default is true.
      */
     bind(eventType: string, eventData: any, preventBubble: boolean): JQuery;
@@ -1924,7 +1924,7 @@ interface JQuery {
     /**
      * Bind an event handler to the "blur" JavaScript event
      *
-     * @param eventData An object containing data that will be passed to the event handler.
+     * @param eventData An object containing fixtureData that will be passed to the event handler.
      * @param handler A function to execute each time the event is triggered.
      */
     blur(eventData?: any, handler?: (eventObject: JQueryEventObject) => any): JQuery;
@@ -1942,7 +1942,7 @@ interface JQuery {
     /**
      * Bind an event handler to the "change" JavaScript event
      *
-     * @param eventData An object containing data that will be passed to the event handler.
+     * @param eventData An object containing fixtureData that will be passed to the event handler.
      * @param handler A function to execute each time the event is triggered.
      */
     change(eventData?: any, handler?: (eventObject: JQueryEventObject) => any): JQuery;
@@ -1954,13 +1954,13 @@ interface JQuery {
     /**
      * Bind an event handler to the "click" JavaScript event
      *
-     * @param eventData An object containing data that will be passed to the event handler.
+     * @param eventData An object containing fixtureData that will be passed to the event handler.
      */
     click(handler: (eventObject: JQueryEventObject) => any): JQuery;
     /**
      * Bind an event handler to the "click" JavaScript event
      *
-     * @param eventData An object containing data that will be passed to the event handler.
+     * @param eventData An object containing fixtureData that will be passed to the event handler.
      * @param handler A function to execute each time the event is triggered.
      */
     click(eventData?: any, handler?: (eventObject: JQueryEventObject) => any): JQuery;
@@ -1978,7 +1978,7 @@ interface JQuery {
     /**
      * Bind an event handler to the "dblclick" JavaScript event
      *
-     * @param eventData An object containing data that will be passed to the event handler.
+     * @param eventData An object containing fixtureData that will be passed to the event handler.
      * @param handler A function to execute each time the event is triggered.
      */
     dblclick(eventData?: any, handler?: (eventObject: JQueryEventObject) => any): JQuery;
@@ -1999,7 +1999,7 @@ interface JQuery {
     /**
      * Bind an event handler to the "focus" JavaScript event
      *
-     * @param eventData An object containing data that will be passed to the event handler.
+     * @param eventData An object containing fixtureData that will be passed to the event handler.
      * @param handler A function to execute each time the event is triggered.
      */
     focus(eventData?: any, handler?: (eventObject: JQueryEventObject) => any): JQuery;
@@ -2017,7 +2017,7 @@ interface JQuery {
     /**
      * Bind an event handler to the "focusin" JavaScript event
      *
-     * @param eventData An object containing data that will be passed to the event handler.
+     * @param eventData An object containing fixtureData that will be passed to the event handler.
      * @param handler A function to execute each time the event is triggered.
      */
     focusin(eventData: Object, handler: (eventObject: JQueryEventObject) => any): JQuery;
@@ -2035,7 +2035,7 @@ interface JQuery {
     /**
      * Bind an event handler to the "focusout" JavaScript event
      *
-     * @param eventData An object containing data that will be passed to the event handler.
+     * @param eventData An object containing fixtureData that will be passed to the event handler.
      * @param handler A function to execute each time the event is triggered.
      */
     focusout(eventData: Object, handler: (eventObject: JQueryEventObject) => any): JQuery;
@@ -2067,7 +2067,7 @@ interface JQuery {
     /**
      * Bind an event handler to the "keydown" JavaScript event
      *
-     * @param eventData An object containing data that will be passed to the event handler.
+     * @param eventData An object containing fixtureData that will be passed to the event handler.
      * @param handler A function to execute each time the event is triggered.
      */
     keydown(eventData?: any, handler?: (eventObject: JQueryKeyEventObject) => any): JQuery;
@@ -2085,7 +2085,7 @@ interface JQuery {
     /**
      * Bind an event handler to the "keypress" JavaScript event
      *
-     * @param eventData An object containing data that will be passed to the event handler.
+     * @param eventData An object containing fixtureData that will be passed to the event handler.
      * @param handler A function to execute each time the event is triggered.
      */
     keypress(eventData?: any, handler?: (eventObject: JQueryKeyEventObject) => any): JQuery;
@@ -2103,7 +2103,7 @@ interface JQuery {
     /**
      * Bind an event handler to the "keyup" JavaScript event
      *
-     * @param eventData An object containing data that will be passed to the event handler.
+     * @param eventData An object containing fixtureData that will be passed to the event handler.
      * @param handler A function to execute each time the event is triggered.
      */
     keyup(eventData?: any, handler?: (eventObject: JQueryKeyEventObject) => any): JQuery;
@@ -2117,7 +2117,7 @@ interface JQuery {
     /**
      * Bind an event handler to the "load" JavaScript event.
      *
-     * @param eventData An object containing data that will be passed to the event handler.
+     * @param eventData An object containing fixtureData that will be passed to the event handler.
      * @param handler A function to execute when the event is triggered.
      */
     load(eventData?: any, handler?: (eventObject: JQueryEventObject) => any): JQuery;
@@ -2135,7 +2135,7 @@ interface JQuery {
     /**
      * Bind an event handler to the "mousedown" JavaScript event.
      *
-     * @param eventData An object containing data that will be passed to the event handler.
+     * @param eventData An object containing fixtureData that will be passed to the event handler.
      * @param handler A function to execute when the event is triggered.
      */
     mousedown(eventData: Object, handler: (eventObject: JQueryMouseEventObject) => any): JQuery;
@@ -2153,7 +2153,7 @@ interface JQuery {
     /**
      * Bind an event handler to be fired when the mouse enters an element.
      *
-     * @param eventData An object containing data that will be passed to the event handler.
+     * @param eventData An object containing fixtureData that will be passed to the event handler.
      * @param handler A function to execute when the event is triggered.
      */
     mouseenter(eventData: Object, handler: (eventObject: JQueryMouseEventObject) => any): JQuery;
@@ -2171,7 +2171,7 @@ interface JQuery {
     /**
      * Bind an event handler to be fired when the mouse leaves an element.
      *
-     * @param eventData An object containing data that will be passed to the event handler.
+     * @param eventData An object containing fixtureData that will be passed to the event handler.
      * @param handler A function to execute when the event is triggered.
      */
     mouseleave(eventData: Object, handler: (eventObject: JQueryMouseEventObject) => any): JQuery;
@@ -2189,7 +2189,7 @@ interface JQuery {
     /**
      * Bind an event handler to the "mousemove" JavaScript event.
      *
-     * @param eventData An object containing data that will be passed to the event handler.
+     * @param eventData An object containing fixtureData that will be passed to the event handler.
      * @param handler A function to execute when the event is triggered.
      */
     mousemove(eventData: Object, handler: (eventObject: JQueryMouseEventObject) => any): JQuery;
@@ -2207,7 +2207,7 @@ interface JQuery {
     /**
      * Bind an event handler to the "mouseout" JavaScript event.
      *
-     * @param eventData An object containing data that will be passed to the event handler.
+     * @param eventData An object containing fixtureData that will be passed to the event handler.
      * @param handler A function to execute when the event is triggered.
      */
     mouseout(eventData: Object, handler: (eventObject: JQueryMouseEventObject) => any): JQuery;
@@ -2225,7 +2225,7 @@ interface JQuery {
     /**
      * Bind an event handler to the "mouseover" JavaScript event.
      *
-     * @param eventData An object containing data that will be passed to the event handler.
+     * @param eventData An object containing fixtureData that will be passed to the event handler.
      * @param handler A function to execute when the event is triggered.
      */
     mouseover(eventData: Object, handler: (eventObject: JQueryMouseEventObject) => any): JQuery;
@@ -2243,7 +2243,7 @@ interface JQuery {
     /**
      * Bind an event handler to the "mouseup" JavaScript event.
      *
-     * @param eventData An object containing data that will be passed to the event handler.
+     * @param eventData An object containing fixtureData that will be passed to the event handler.
      * @param handler A function to execute when the event is triggered.
      */
     mouseup(eventData: Object, handler: (eventObject: JQueryMouseEventObject) => any): JQuery;
@@ -2293,7 +2293,7 @@ interface JQuery {
      * Attach an event handler function for one or more events to the selected elements.
      *
      * @param events One or more space-separated event types and optional namespaces, such as "click" or "keydown.myPlugin".
-     * @param data Data to be passed to the handler in event.data when an event is triggered.
+     * @param data Data to be passed to the handler in event.fixtureData when an event is triggered.
      * @param handler A function to execute when the event is triggered. The value false is also allowed as a shorthand for a function that simply does return false.
     */
     on(events: string, data : any, handler: (eventObject: JQueryEventObject, ...args: any[]) => any): JQuery;
@@ -2310,7 +2310,7 @@ interface JQuery {
      *
      * @param events One or more space-separated event types and optional namespaces, such as "click" or "keydown.myPlugin".
      * @param selector A selector string to filter the descendants of the selected elements that trigger the event. If the selector is null or omitted, the event is always triggered when it reaches the selected element.
-     * @param data Data to be passed to the handler in event.data when an event is triggered.
+     * @param data Data to be passed to the handler in event.fixtureData when an event is triggered.
      * @param handler A function to execute when the event is triggered. The value false is also allowed as a shorthand for a function that simply does return false.
      */
     on(events: string, selector: string, data: any, handler: (eventObject: JQueryEventObject, ...eventData: any[]) => any): JQuery;
@@ -2319,14 +2319,14 @@ interface JQuery {
      *
      * @param events An object in which the string keys represent one or more space-separated event types and optional namespaces, and the values represent a handler function to be called for the event(s).
      * @param selector A selector string to filter the descendants of the selected elements that will call the handler. If the selector is null or omitted, the handler is always called when it reaches the selected element.
-     * @param data Data to be passed to the handler in event.data when an event occurs.
+     * @param data Data to be passed to the handler in event.fixtureData when an event occurs.
      */
     on(events: { [key: string]: any; }, selector?: string, data?: any): JQuery;
     /**
      * Attach an event handler function for one or more events to the selected elements.
      *
      * @param events An object in which the string keys represent one or more space-separated event types and optional namespaces, and the values represent a handler function to be called for the event(s).
-     * @param data Data to be passed to the handler in event.data when an event occurs.
+     * @param data Data to be passed to the handler in event.fixtureData when an event occurs.
      */
     on(events: { [key: string]: any; }, data?: any): JQuery;
 
@@ -2341,7 +2341,7 @@ interface JQuery {
      * Attach a handler to an event for the elements. The handler is executed at most once per element per event type.
      *
      * @param events A string containing one or more JavaScript event types, such as "click" or "submit," or custom event names.
-     * @param data An object containing data that will be passed to the event handler.
+     * @param data An object containing fixtureData that will be passed to the event handler.
      * @param handler A function to execute at the time the event is triggered.
      */
     one(events: string, data: Object, handler: (eventObject: JQueryEventObject) => any): JQuery;
@@ -2359,7 +2359,7 @@ interface JQuery {
      *
      * @param events One or more space-separated event types and optional namespaces, such as "click" or "keydown.myPlugin".
      * @param selector A selector string to filter the descendants of the selected elements that trigger the event. If the selector is null or omitted, the event is always triggered when it reaches the selected element.
-     * @param data Data to be passed to the handler in event.data when an event is triggered.
+     * @param data Data to be passed to the handler in event.fixtureData when an event is triggered.
      * @param handler A function to execute when the event is triggered. The value false is also allowed as a shorthand for a function that simply does return false.
      */
     one(events: string, selector: string, data: any, handler: (eventObject: JQueryEventObject) => any): JQuery;
@@ -2369,7 +2369,7 @@ interface JQuery {
      *
      * @param events An object in which the string keys represent one or more space-separated event types and optional namespaces, and the values represent a handler function to be called for the event(s).
      * @param selector A selector string to filter the descendants of the selected elements that will call the handler. If the selector is null or omitted, the handler is always called when it reaches the selected element.
-     * @param data Data to be passed to the handler in event.data when an event occurs.
+     * @param data Data to be passed to the handler in event.fixtureData when an event occurs.
      */
     one(events: { [key: string]: any; }, selector?: string, data?: any): JQuery;
 
@@ -2377,7 +2377,7 @@ interface JQuery {
      * Attach a handler to an event for the elements. The handler is executed at most once per element per event type.
      *
      * @param events An object in which the string keys represent one or more space-separated event types and optional namespaces, and the values represent a handler function to be called for the event(s).
-     * @param data Data to be passed to the handler in event.data when an event occurs.
+     * @param data Data to be passed to the handler in event.fixtureData when an event occurs.
      */
     one(events: { [key: string]: any; }, data?: any): JQuery;
 
@@ -2402,7 +2402,7 @@ interface JQuery {
     /**
      * Bind an event handler to the "resize" JavaScript event.
      *
-     * @param eventData An object containing data that will be passed to the event handler.
+     * @param eventData An object containing fixtureData that will be passed to the event handler.
      * @param handler A function to execute each time the event is triggered.
      */
     resize(eventData: Object, handler: (eventObject: JQueryEventObject) => any): JQuery;
@@ -2420,7 +2420,7 @@ interface JQuery {
     /**
      * Bind an event handler to the "scroll" JavaScript event.
      *
-     * @param eventData An object containing data that will be passed to the event handler.
+     * @param eventData An object containing fixtureData that will be passed to the event handler.
      * @param handler A function to execute each time the event is triggered.
      */
     scroll(eventData: Object, handler: (eventObject: JQueryEventObject) => any): JQuery;
@@ -2438,7 +2438,7 @@ interface JQuery {
     /**
      * Bind an event handler to the "select" JavaScript event.
      *
-     * @param eventData An object containing data that will be passed to the event handler.
+     * @param eventData An object containing fixtureData that will be passed to the event handler.
      * @param handler A function to execute each time the event is triggered.
      */
     select(eventData: Object, handler: (eventObject: JQueryEventObject) => any): JQuery;
@@ -2456,7 +2456,7 @@ interface JQuery {
     /**
      * Bind an event handler to the "submit" JavaScript event
      *
-     * @param eventData An object containing data that will be passed to the event handler.
+     * @param eventData An object containing fixtureData that will be passed to the event handler.
      * @param handler A function to execute each time the event is triggered.
      */
     submit(eventData?: any, handler?: (eventObject: JQueryEventObject) => any): JQuery;
@@ -2548,7 +2548,7 @@ interface JQuery {
     /**
      * Bind an event handler to the "unload" JavaScript event. (DEPRECATED from v1.8)
      * 
-     * @param eventData A plain object of data that will be passed to the event handler.
+     * @param eventData A plain object of fixtureData that will be passed to the event handler.
      * @param handler A function to execute when the event is triggered.
      */
     unload(eventData?: any, handler?: (eventObject: JQueryEventObject) => any): JQuery;
@@ -2569,7 +2569,7 @@ interface JQuery {
     /**
      * Bind an event handler to the "error" JavaScript event. (DEPRECATED from v1.8)
      * 
-     * @param eventData A plain object of data that will be passed to the event handler.
+     * @param eventData A plain object of fixtureData that will be passed to the event handler.
      * @param handler A function to execute when the event is triggered.
      */
     error(eventData: any, handler: (eventObject: JQueryEventObject) => any): JQuery;
@@ -2641,8 +2641,8 @@ interface JQuery {
     /**
      * Create a deep copy of the set of matched elements.
      * 
-     * param withDataAndEvents A Boolean indicating whether event handlers and data should be copied along with the elements. The default value is false.
-     * param deepWithDataAndEvents A Boolean indicating whether event handlers and data for all children of the cloned element should be copied. By default its value matches the first argument's value (which defaults to false).
+     * param withDataAndEvents A Boolean indicating whether event handlers and fixtureData should be copied along with the elements. The default value is false.
+     * param deepWithDataAndEvents A Boolean indicating whether event handlers and fixtureData for all children of the cloned element should be copied. By default its value matches the first argument's value (which defaults to false).
      */
     clone(withDataAndEvents?: boolean, deepWithDataAndEvents?: boolean): JQuery;
 

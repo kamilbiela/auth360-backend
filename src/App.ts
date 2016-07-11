@@ -55,11 +55,10 @@ export class App {
     private getConfiguredRoutes(): Hapi.IRouteConfiguration[] {
         let c = this.container;
         return [
-            routes.indexGET(c.getLogger()),
             routes.clientGET(c.getClientDataMapper()),
             routes.clientPOST(c.getClientBuilder(), this.container.getClientDataMapper()),
-            routes.authGET(c.getClientDataMapper()),
-            routes.authPOST(c.getClientDataMapper(), c.getCodeManager(), c.getUserDataMapper(), c.getPasswordHasher())
+            routes.authCodeGrantGET(c.getClientDataMapper()),
+            routes.authCodeGrantPOST(c.getClientDataMapper(), c.getCodeManager(), c.getUserDataMapper(), c.getPasswordHasher())
         ];
     }
 

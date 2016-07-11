@@ -758,24 +758,24 @@ declare module 'joi' {
 	// --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
 	/**
-	 * Generates a schema object that matches any data type.
+	 * Generates a schema object that matches any fixtureData type.
 	 */
 	export function any(): Schema;
 
 	/**
-	 * Generates a schema object that matches an array data type.
+	 * Generates a schema object that matches an array fixtureData type.
 	 */
 	export function array(): ArraySchema;
 
 	/**
-	 * Generates a schema object that matches a boolean data type (as well as the strings 'true', 'false', 'yes', and 'no'). Can also be called via bool().
+	 * Generates a schema object that matches a boolean fixtureData type (as well as the strings 'true', 'false', 'yes', and 'no'). Can also be called via bool().
 	 */
 	export function bool(): BooleanSchema;
 
 	export function boolean(): BooleanSchema;
 
 	/**
-	 * Generates a schema object that matches a Buffer data type (as well as the strings which will be converted to Buffers).
+	 * Generates a schema object that matches a Buffer fixtureData type (as well as the strings which will be converted to Buffers).
 	 */
 	export function binary(): BinarySchema;
 
@@ -790,17 +790,17 @@ declare module 'joi' {
 	export function func(): FunctionSchema;
 
 	/**
-	 * Generates a schema object that matches a number data type (as well as strings that can be converted to numbers).
+	 * Generates a schema object that matches a number fixtureData type (as well as strings that can be converted to numbers).
 	 */
 	export function number(): NumberSchema;
 
 	/**
-	 * Generates a schema object that matches an object data type (as well as JSON strings that parsed into objects).
+	 * Generates a schema object that matches an object fixtureData type (as well as JSON strings that parsed into objects).
 	 */
 	export function object(schema?: SchemaMap): ObjectSchema;
 
 	/**
-	 * Generates a schema object that matches a string data type. Note that empty strings are not allowed by default and must be enabled with allow('').
+	 * Generates a schema object that matches a string fixtureData type. Note that empty strings are not allowed by default and must be enabled with allow('').
 	 */
 	export function string(): StringSchema;
 

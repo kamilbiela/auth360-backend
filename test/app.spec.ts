@@ -2,7 +2,7 @@ import * as Promise from "promise";
 import {App} from "../src/App";
 import {ServiceContainer} from "../src/service/ServiceContainer";
 import {configLoader} from "../src/configLoader";
-import {ClientId} from "../src/model/client";
+import {ClientId, Client} from "../src/model/client";
 import {UserId} from "../src/model/User";
 
 export const fixtureData = {
@@ -50,14 +50,16 @@ export class AppTest extends App {
         ;
     }
     
-    loadClient(redirectUri: string): Promise.IThenable<ClientId> {
+    loadClient(redirectUri: string): Promise.IThenable<Client> {
         let clientBuilder = this.getContainer().getClientBuilder()();
         clientBuilder.setName("client-name");
         clientBuilder.setRedirectUri(redirectUri);
         clientBuilder.setWebsiteURL("http://somewebsite.localhost");
-        
-        return clientBuilder.getResult()
-            .then(client => this.container.getClientDataMapper().insert(client));
+       
+        let clientPromise = clientBuilder.getResult();
+        return clientPromise
+            .then(client => this.container.getClientDataMapper().insert(client))
+            .then(() => clientPromise);
     }
 }
 
