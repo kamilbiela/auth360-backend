@@ -10,6 +10,7 @@
 /// <reference path="globals/node/index.d.ts" />
 /// <reference path="globals/promise/index.d.ts" />
 /// <reference path="globals/redis/index.d.ts" />
+/// <reference path="globals/sinon/index.d.ts" />
 /// <reference path="globals/swig/index.d.ts" />
 /// <reference path="globals/winston/index.d.ts" />
 /// <reference path="globals/yargs/index.d.ts" />

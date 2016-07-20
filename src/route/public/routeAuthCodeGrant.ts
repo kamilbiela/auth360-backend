@@ -5,10 +5,11 @@ import * as _ from "lodash";
 
 import {IClientDataMapper} from "../../service/dataMapper/IClientDataMapper";
 import {IUserDataMapper} from "../../service/dataMapper/IUserDataMapper";
-import {CodeManager} from "../../service/CodeManager";
+import {CodeManager} from "../../service/manager/CodeManager";
 import {IPasswordHasher} from "../../service/IPasswordHasher";
 import {Routes} from "../../routes.const.ts";
 import {Client} from "../../model/Client";
+import {User} from "../../model/User";
 
 const TEMPLATE_NAME = "login.html";
 
@@ -38,28 +39,36 @@ const preClientId = (clientDataMapper: IClientDataMapper) => (request: Hapi.Requ
         }
 
         return reply(client);
+    }, () => {
+        // @todo check error and status code
+        let response = reply(JSON.stringify({
+            error: "invalid_request",
+            error_description: "@todo"
+        })).takeover();
+        response.statusCode = 500;
+        return response;
     });
 };
 
 const preRedirectUri = () => (request: Hapi.Request, reply: any): any => {
-	let client: Client = request.pre[CLIENT];
-	let redirectUri = request.query.redirect_uri;
-	if (!_.isEmpty(redirectUri) && redirectUri !== client.redirectUri) {
-		let response = reply(JSON.stringify({
-			error: "invalid_request",
-			error_description: "redirect_uri mismatch"
-		})).takeover();
-		response.statusCode = 400;
-		return response;
-	}
-	
-	return reply();
+    let client: Client = request.pre[CLIENT];
+    let redirectUri = request.query.redirect_uri;
+    if (!_.isEmpty(redirectUri) && redirectUri !== client.redirectUri) {
+        let response = reply(JSON.stringify({
+            error: "invalid_request",
+            error_description: "redirect_uri mismatch"
+        })).takeover();
+        response.statusCode = 400;
+        return response;
+    }
+
+    return reply();
 };
 
 const preResponseType = () => (request: Hapi.Request, reply: any): any => {
     let responseType = request.query.response_type;
     let client: Client = request.pre[CLIENT];
-    
+
     if (_.isEmpty(responseType)) {
         let params = ["error=invalid_request"];
         if (request.query.state) {
@@ -67,17 +76,17 @@ const preResponseType = () => (request: Hapi.Request, reply: any): any => {
         }
         return reply().redirect(client.redirectUri + (params.length ? "?" + params.join("&") : "")).takeover();
     }
-    
+
     return reply();
 };
 
-    
+
 export let authCodeGrantGET = (
     clientDataMapper: IClientDataMapper
 ): Hapi.IRouteConfiguration => {
     return {
         method: "GET",
-        path: Routes.AuthorizePath, 
+        path: Routes.AuthorizePath,
         handler: (request, response) => {
             return response.view(TEMPLATE_NAME);
         },
@@ -91,7 +100,7 @@ export let authCodeGrantGET = (
     }
 };
 
-/* 
+/*
 @todo clean this after tests
  */
 export let authCodeGrantPOST = (
@@ -106,14 +115,17 @@ export let authCodeGrantPOST = (
 
     return {
         method: "POST",
-        path: Routes.AuthorizePath, 
+        path: Routes.AuthorizePath,
         handler: (request, response) => {
             let client: Client = request.pre[CLIENT];
-            
+            let currentUser: User;
+
             return userDataMapper.getByUsername(request.payload.username).then((user) => {
                 if (_.isEmpty(user) || user.id !== request.payload.username) {
                     throw new Error(usernameOrPassError);
                 }
+
+                currentUser = user;
 
                 return passwordHasher.comparePassword(request.payload.password, user.password, user.salt).then((isOk) => {
                     if (!isOk) {
@@ -121,7 +133,7 @@ export let authCodeGrantPOST = (
                     }
                 });
             }).then(() => {
-                return codeManager.createAndInsert(client.id).then(code => {
+                return codeManager.createAndInsert(client.id, currentUser.id).then(code => {
                     return code;
                 })
             }).then((code) => {
@@ -153,5 +165,5 @@ export let authCodeGrantPOST = (
                 {method: preRedirectUri(), assign: REDIRECT_URI}
             ]
         }
-    }  
+    }
 };

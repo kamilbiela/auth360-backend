@@ -11,21 +11,24 @@ import {Config} from "./model/Config";
 import {UuidGenerator} from "./service/uuidGenerator/UuidGenerator";
 import * as routes from "./route/index";
 import {BCryptPasswordHasher} from "./service/passwordHasher/BCryptPasswordHasher";
-import {ClientDataMapperRedis} from "./dataMapper/redis/ClientDataMapperRedis";
-import {UserDataMapperRedis} from "./dataMapper/redis/UserDataMapperRedis";
-import {CodeDataMapperRedis} from "./dataMapper/redis/CodeDataMapperRedis";
+import {
+    ClientDataMapperRedis,
+    UserDataMapperRedis,
+    CodeDataMapperRedis,
+    AccessTokenDataMapperRedis
+} from "./dataMapper/redis/index";
 
 export class App {
     protected container: ServiceContainer = null;
     protected redisClient: redis.RedisClient = null;
     protected server: Hapi.Server = null;
-    
+
     constructor(
         protected config: Config
     ) {
         this.initContainer(config);
     }
-    
+
     private initContainer(config: Config) {
         this.redisClient = redis.createClient();
 
@@ -35,37 +38,39 @@ export class App {
                 new (winston.transports.Console)()
             ]
         });
-        
+
         this.container = new ServiceContainer({
             config: config,
             redisClient: this.redisClient,
             logger: logger,
             clientDataMapper: new ClientDataMapperRedis(this.redisClient),
+            accessTokenDataMapper: new AccessTokenDataMapperRedis(this.redisClient),
             userDataMapper: new UserDataMapperRedis(this.redisClient),
             codeDataMapper: new CodeDataMapperRedis(this.redisClient),
             uuidGenerator: new UuidGenerator(),
             passwordHasher: new BCryptPasswordHasher(),
         });
     }
-    
+
     protected tearDownDbConnection() {
         this.redisClient.quit();
     }
-    
+
     private getConfiguredRoutes(): Hapi.IRouteConfiguration[] {
         let c = this.container;
         return [
             routes.clientGET(c.getClientDataMapper()),
             routes.clientPOST(c.getClientBuilder(), this.container.getClientDataMapper()),
             routes.authCodeGrantGET(c.getClientDataMapper()),
-            routes.authCodeGrantPOST(c.getClientDataMapper(), c.getCodeManager(), c.getUserDataMapper(), c.getPasswordHasher())
+            routes.authCodeGrantPOST(c.getClientDataMapper(), c.getCodeManager(), c.getUserDataMapper(), c.getPasswordHasher()),
+            routes.tokenPOST(c.getClientDataMapper(), c.getAccessTokenManager(), c.getCodeDataMapper())
         ];
     }
 
     startHttpServer(): Promise.IThenable<any> {
         return new Promise<any>((resolve, reject) => {
             this.container.getLogger().debug(`Starting http server on port ${this.config.http.port}`);
-            
+
             this.server = new Hapi.Server(<any>{
                 debug:  {
                     request: ['error', 'debug', 'all']
@@ -76,7 +81,7 @@ export class App {
                     console.log("Failed to load vision.");
                 }
             });
-            
+
             this.server.connection({port: this.config.http.port});
             this.server.views({
                 engines: {
@@ -85,7 +90,7 @@ export class App {
                 path: "./src/template" // @todo put in config
             });
             this.server.route(this.getConfiguredRoutes());
-            
+
             this.server.start((err) => {
                 if (err) {
                     return reject(err);
@@ -107,7 +112,7 @@ export class App {
     startCli(): void {
         // @todo move to separate class
         // @todo convert to promises, move command handling out of "command" methods
-        
+
         let argv = (<any>yargs)
             .command("client:create", "Create new client", (yargs: yargs.Argv) => {
                 return yargs
@@ -118,7 +123,7 @@ export class App {
                 let clientBuilder = this.container.getClientBuilder()();
                 clientBuilder.setName(argv.name);
                 clientBuilder.setRedirectUri(argv.redirectUri);
-                
+
                 clientBuilder.getResult().then((client) => {
                     return this.container.getClientDataMapper().insert(client).then(() => {
                         console.log("Created client");
@@ -127,7 +132,7 @@ export class App {
                     });
                 })
             })
-            
+
             .command("client:delete", "Delete client", (yargs: yargs.Argv) => {
                 return yargs.demand("id");
             }, (argv: any) => {
@@ -153,8 +158,8 @@ export class App {
                     });
                 })
             })
-            
+
             .argv;
     }
-    
+
 }
